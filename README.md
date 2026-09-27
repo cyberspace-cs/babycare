@@ -1,4 +1,4 @@
-<img width="704" height="1408" alt="babaycare" src="https://github.com/user-attachments/assets/479c4651-165d-4d2e-ac71-66786c9aeb87" /># babycare · 食事求适小队演示
+babycare · 食事求适小队演示
 
 > 摄像头拍到做菜 → 多模态模型识别出菜品 → 查《中国食物成分表》折算营养 →
 > 对照月龄标准表和今日累计算出缺口 → **正向**给备餐建议，**负向**拦住不该吃的东西。
@@ -49,6 +49,8 @@ python serve.py --host 0.0.0.0     # 让同局域网的其他设备也能访问
 ## 二、产品原型
 
 页面是一个手机原型，底部 5 个 Tab。**首页的数据是后端实时算出来的**：
+
+<img width="704" height="1408" alt="babaycare" src="https://github.com/user-attachments/assets/479c4651-165d-4d2e-ac71-66786c9aeb87" /># 
 
 | 位置 | 静态打开 | 接了后端 |
 |---|---|---|
