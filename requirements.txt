@@ -1,0 +1,4 @@
+# 可选依赖 —— 不装也能跑，见 README 第一节「方式 A」
+# 装了之后 serve.py 会自动切到 FastAPI 模式，/docs 会出现可交互接口文档。
+fastapi>=0.110
+uvicorn>=0.27

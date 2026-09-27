@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBF6EE">
+<title>宝宝饮食 · 会吃</title>
+<style>
+:root{
+  --bg:#EFE7DA; --page:#FBF6EE; --card:#FFFFFF; --soft:#FFF9F2; --soft-2:#F7F1E8;
+  --ink:#3D3A35; --ink-2:#7C756B; --ink-3:#ABA298; --line:#F1E9DD; --line-2:#EDE4D6;
+  --brand:#8B85E0; --brand-2:#A9A5E8; --brand-soft:#EFEDFB;
+  --green:#6FC79A; --green-d:#4FAE81; --green-soft:#E7F6EE;
+  --orange:#F5B461; --orange-soft:#FDF2E1;
+  --purple:#B8A5E8; --purple-soft:#F2EDFC;
+  --pink:#F5A0A0; --pink-soft:#FDECEC;
+  --blue:#9CC6F0; --blue-soft:#EAF3FC;
+  --amber:#F5C46B;
+  --r:20px; --r-sm:14px;
+  --sh:0 6px 20px rgba(120,104,80,.08);
+  --sh-sm:0 3px 12px rgba(120,104,80,.06);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(120% 90% at 50% 0%,#F7F1E6 0%,var(--bg) 70%);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  color:var(--ink); display:flex; align-items:center; justify-content:center;
+  min-height:100vh; padding:28px 16px;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;padding:0}
+img{display:block;max-width:100%}
+
+.phone{
+  position:relative; width:390px; height:844px; background:var(--page);
+  border-radius:44px; box-shadow:0 24px 70px rgba(90,76,56,.28), 0 0 0 10px #1e1c19, 0 0 0 11px #35322d;
+  overflow:hidden; display:flex; flex-direction:column;
+}
+.statusbar{
+  flex:0 0 auto; height:44px; display:flex; align-items:center; justify-content:space-between;
+  padding:0 26px 0 30px; font-size:13.5px; font-weight:600; color:var(--ink); z-index:6;
+}
+.statusbar .sb-right{display:flex;align-items:center;gap:6px}
+.statusbar svg{display:block}
+
+.screen{
+  flex:1 1 auto; overflow-y:auto; overflow-x:hidden; scrollbar-width:none;
+  padding-bottom:84px;
+}
+.screen::-webkit-scrollbar{display:none}
+.view{display:none; animation:fade .22s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.pad{padding:0 16px}
+.appbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:2px 16px 12px;
+}
+.wordmark{font-size:21px;font-weight:700;letter-spacing:-.3px;color:#5B5A8C}
+.wordmark i{color:var(--green);font-style:normal}
+.appbar-right{display:flex;align-items:center;gap:10px}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:var(--sh-sm)}
+.avatar-sm{width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,#FFE3C4,#FFC9A3);display:grid;place-items:center;font-size:13px;font-weight:600;color:#8A5A32;box-shadow:var(--sh-sm)}
+
+/* 通用卡片 */
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:16px;margin-bottom:14px}
+.card.tight{padding:14px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px}
+.sec-title{font-size:16px;font-weight:700;letter-spacing:-.2px}
+.sec-title .info{color:var(--ink-3);font-size:12px;font-weight:400;margin-left:4px}
+.sec-more{font-size:12.5px;color:var(--ink-3);display:flex;align-items:center;gap:2px}
+.chev{width:14px;height:14px;stroke:var(--ink-3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* 首页 hero */
+.hero{
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#FFF6EA 0%,#FDF0F5 55%,#EEF5F1 100%);
+  padding:14px 14px 14px 16px; border:1px solid #F6EADB;
+}
+.hero-txt{flex:1;min-width:0}
+.hero-media{position:relative;width:96px;height:96px;flex:0 0 auto;margin:-2px -4px -2px 0}
+.hero-media img{width:96px;height:96px;border-radius:22px;object-fit:cover;object-position:center 30%}
+.hero-media .ring{position:absolute;left:-18px;bottom:-6px;width:58px;height:58px;background:#fff;border-radius:50%;box-shadow:0 4px 12px rgba(120,104,80,.16)}
+.hero-title{font-size:18px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:6px}
+.tick{width:19px;height:19px;border-radius:50%;background:var(--green);display:grid;place-items:center;flex:0 0 auto}
+.tick svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.hero-sub{font-size:12.5px;color:var(--ink-2);margin:7px 0 0;line-height:1.5}
+.hero-note{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:12px;color:var(--brand);font-weight:600}
+
+/* 进度环 */
+.ring{position:relative;width:74px;height:74px;flex:0 0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .rc{fill:none;stroke-width:8;stroke-linecap:round}
+.ring .rbg{fill:none;stroke:rgba(255,255,255,.75)}
+/* 环内文字层：通用规则。原先只写在 .ring 下，导致 .tc-ring 里的 .rt
+   退回普通文档流、被挤到 SVG 下方压住餐名。凡环形容器都复用这一条。 */
+.rt{position:absolute;inset:0;display:grid;place-items:center;align-content:center;text-align:center;line-height:1}
+.ring .rt b{font-size:20px;font-weight:700;letter-spacing:-.5px}
+.ring .rt b i{font-size:11px;font-style:normal;font-weight:600}
+.ring .rt span{display:block;font-size:9px;color:var(--ink-3);margin-top:3px}
+
+/* 三餐进度 */
+.meal-prog{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mp{background:var(--soft);border-radius:var(--r-sm);padding:11px 10px;text-align:center;border:1px solid var(--line)}
+.mp .mp-ico{font-size:17px}
+.mp .mp-name{font-size:12px;color:var(--ink-2);margin-top:3px}
+.mp .mp-val{font-size:13px;font-weight:700;margin-top:4px}
+.mp.done{background:var(--green-soft);border-color:#D6EFE2}
+.mp.done .mp-val{color:var(--green-d)}
+.mp.warn{background:var(--orange-soft);border-color:#F8E6C8}
+.mp.warn .mp-val{color:#D08A2C}
+
+/* 三餐列表 */
+.meal-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.meal-row:last-child{border-bottom:none;padding-bottom:2px}
+.meal-thumb{width:48px;height:48px;border-radius:14px;object-fit:cover;flex:0 0 auto;background:var(--soft-2)}
+.meal-info{flex:1;min-width:0}
+.meal-name{font-size:14.5px;font-weight:600}
+.meal-meta{font-size:11.5px;color:var(--ink-3);margin-top:3px}
+.meal-tag{font-size:10.5px;padding:2px 7px;border-radius:20px;background:var(--green-soft);color:var(--green-d);font-weight:600;margin-left:6px}
+
+/* 快速记录 */
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.q{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px;border-radius:var(--r-sm);background:var(--soft);border:1px solid var(--line);transition:transform .15s}
+.q:active{transform:scale(.95)}
+.q .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center}
+.q span{font-size:11.5px;color:var(--ink-2);font-weight:500}
+.q .qi svg{width:21px;height:21px;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---- 首页（对齐设计稿） ---- */
+.hd-left{min-width:0;display:flex;align-items:center;gap:9px}
+.hd-logo{width:40px;height:40px;border-radius:13px;background:#FDF2E7;flex:0 0 auto;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.03)}
+.hd-logo img{width:100%;height:100%;object-fit:cover;display:block}
+.hd-tag{font-size:9.5px;color:var(--ink-3);margin-top:1px;white-space:nowrap}
+.hd-baby{display:flex;align-items:center;gap:7px}
+.hd-baby .hb-av{width:36px;height:36px;border-radius:50%;flex:0 0 auto;overflow:hidden;background:var(--soft-2);
+  box-shadow:0 0 0 2px #fff,var(--sh-sm)}
+.hd-baby .hb-av img{width:100%;height:100%;object-fit:cover;display:block}
+.hd-baby .hb-t{font-size:11.5px;font-weight:700;line-height:1.25;white-space:nowrap}
+.hd-baby .hb-t span{display:block;font-size:9px;color:var(--ink-3);font-weight:500;margin-top:1px}
+
+.hero2{display:flex;align-items:flex-end;padding:14px 8px 0;min-height:198px;overflow:hidden;
+  background:linear-gradient(140deg,#FFF7F3 0%,#FEF4EE 42%,#FDF7F0 100%);border:1px solid #F8E9E1}
+.hero2 .h2-txt{flex:1 1 0;min-width:0;padding-bottom:16px;position:relative;z-index:4}
+.hero2 .h2-chip{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:700;color:#D2798E}
+.hero2 .h2-title{font-size:20px;font-weight:800;letter-spacing:-.5px;line-height:1.16;margin:9px 0 0}
+.hero2 .h2-sub{font-size:10.5px;color:var(--ink-2);margin-top:7px}
+.hero2 .h2-art{flex:0 0 auto;width:124px;display:block;margin:0 -4px -4px -8px;position:relative;z-index:2;
+  filter:drop-shadow(0 6px 14px rgba(178,138,96,.16))}
+.hero2 .h2-right{flex:0 0 auto;width:92px;text-align:center;padding-bottom:16px;position:relative;z-index:4}
+.hero2 .h2-ring{position:relative;width:92px;height:92px}
+.hero2 .h2-ring svg{width:92px;height:92px;display:block}
+.hero2 .h2-ring .rt span{display:block;font-size:7.5px;color:var(--ink-3);line-height:1.1}
+.hero2 .h2-ring .rt b{font-size:19px;display:block;margin-top:2px;letter-spacing:-.6px}
+.hero2 .h2-leaf{position:absolute;left:50%;top:-6px;transform:translateX(-40%);font-size:11px;line-height:1}
+.hero2 .h2-up{font-size:9px;color:var(--green-d);font-weight:700;margin-top:6px;white-space:nowrap}
+
+.nut4{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid var(--line);
+  border-radius:var(--r);padding:13px 8px;box-shadow:var(--sh-sm)}
+.n4{padding:0 9px;border-radius:14px}
+.n4:nth-child(1),.n4:nth-child(3){background:linear-gradient(180deg,#F4FBF7,#FAFEFC)}
+.n4:nth-child(4){background:linear-gradient(180deg,#FEF5F5,#FFFBFA)}
+.n4 .n4-i{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;font-size:14px}
+.n4 .n4-k{font-size:9.5px;color:var(--ink-2);margin-top:8px;white-space:nowrap}
+.n4 .n4-v{font-size:17px;font-weight:800;letter-spacing:-.5px;margin-top:3px}
+.n4 .n4-bar{height:5px;border-radius:4px;background:#EFEAE3;margin-top:8px;overflow:hidden}
+.n4 .n4-bar i{display:block;height:100%;border-radius:4px}
+.n4 .n4-s{font-size:9px;font-weight:700;margin-top:7px;white-space:nowrap}
+.n4.ok .n4-s{color:#3E9E68}
+.n4.mid .n4-s{color:#D08A2C}
+.n4.low .n4-s{color:#D9756F}
+
+.m3{display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border:1px solid var(--line);
+  border-radius:var(--r);padding:7px;box-shadow:var(--sh-sm)}
+.m3c{padding:6px 7px 8px;border-radius:15px;cursor:pointer}
+.m3c:nth-child(3){background:#F0F7FD}
+.m3c .m3-h{font-size:9.5px;color:var(--ink-2);white-space:nowrap;display:flex;align-items:center;gap:3px}
+.m3c .m3-img{width:100%;height:58px;border-radius:11px;object-fit:cover;display:block;margin-top:7px;background:var(--soft-2)}
+.m3c .m3-n{font-size:11px;font-weight:700;margin-top:8px;display:flex;align-items:center;gap:2px;white-space:nowrap}
+.m3c .m3-n em{font-style:normal;overflow:hidden;text-overflow:ellipsis}
+.m3c .m3-n svg{width:11px;height:11px;fill:none;stroke:var(--ink-3);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.m3c .m3-t{font-size:8.5px;font-weight:700;margin-top:8px;border-radius:9px;padding:3px 7px;display:inline-block;white-space:nowrap}
+.m3c .m3-t.ok{background:#E4F5E9;color:#3E9E68}
+.m3c .m3-t.low{background:#FDF2E1;color:#C9832B}
+.m3c .m3-t.mid{background:#EAF3FC;color:#4A7FB5}
+
+.act3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.a3{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:13px 11px;text-align:left;
+  cursor:pointer;box-shadow:var(--sh-sm)}
+.a3 .a3-i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:17px}
+.a3 .a3-t{font-size:11.5px;font-weight:700;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:3px;white-space:nowrap}
+.a3 .a3-t svg{width:11px;height:11px;fill:none;stroke:var(--ink-3);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.a3 .a3-s{font-size:9px;color:var(--ink-3);margin-top:5px;line-height:1.4;white-space:nowrap}
+
+.prep-bn{display:flex;align-items:center;gap:10px;border-radius:var(--r);padding:12px 12px 12px 13px;cursor:pointer;
+  background:linear-gradient(120deg,#FDF0EC,#FCEDE6);border:1px solid #F8E3DC}
+.prep-bn .pb-ico{width:38px;height:38px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:18px;
+  flex:0 0 auto;box-shadow:var(--sh-sm)}
+.prep-bn .pb-t{flex:1;min-width:0}
+.prep-bn .pb-h{font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:5px}
+.prep-bn .pb-h .pb-ai{font-size:8px;font-weight:700;color:#fff;background:#8B85E0;border-radius:5px;padding:1px 4px}
+.prep-bn .pb-s{font-size:9px;color:var(--ink-2);margin-top:4px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 后端文案（「今天富铁食物只到 30%，建议下一餐补猪肝泥。」）比设计稿那句长，
+   允许折成两行。只在渐进增强真的写入摘要时才加 .wrap，
+   保证没有后端时布局与设计稿逐像素一致。 */
+.prep-bn .pb-s.wrap{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.prep-bn .pb-go{flex:0 0 auto;background:#fff;border-radius:15px;padding:7px 10px;font-size:10px;font-weight:700;
+  color:#C4697F;box-shadow:var(--sh-sm);white-space:nowrap}
+.prep-bn .pb-art{flex:0 0 auto;width:40px;height:40px;border-radius:50%;object-fit:cover;margin-left:-3px;
+  box-shadow:var(--sh-sm)}
+
+/* 后端连接标识：只在 /api/meal/day 取数成功时出现，静态打开时不占位、不影响设计稿 */
+.api-bar{display:flex;align-items:center;gap:7px;margin-top:10px;padding:9px 12px;
+  background:linear-gradient(120deg,#EFF8F2,#E8F4EE);border:1px solid #DCEFE4;border-radius:14px}
+.api-bar[hidden]{display:none}
+.api-bar .ab-dot{width:7px;height:7px;border-radius:50%;background:#4FAE81;flex:0 0 auto;
+  box-shadow:0 0 0 3px rgba(79,174,129,.18)}
+.api-bar .ab-t{font-size:10.5px;font-weight:700;color:#3E7A5C;flex:0 0 auto}
+.api-bar .ab-s{font-size:9.5px;color:#7C9A88;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 底部导航 */
+.tabbar{
+  position:absolute;left:0;right:0;bottom:0;height:74px;display:flex;align-items:center;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  padding:0 6px 10px;z-index:8;
+}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:10px;color:var(--ink-3)}
+.tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tab span{font-size:10.5px;font-weight:500}
+.tab.on{color:var(--brand)}
+.tab.on svg{stroke-width:2.1}
+
+/* 统计小卡 */
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.st{background:var(--soft);border-radius:var(--r-sm);padding:10px;border:1px solid var(--line)}
+.st .st-k{font-size:10.5px;color:var(--ink-3);display:flex;align-items:center;gap:4px}
+.st .st-v{font-size:15px;font-weight:700;margin-top:5px}
+.st .st-v i{font-size:10.5px;font-style:normal;color:var(--ink-3);font-weight:500}
+
+/* 报告：整体达标 */
+.report-hero{background:linear-gradient(135deg,#FFF6EA,#FDF1F4);border:1px solid #F6EADB;display:flex;align-items:center;gap:6px}
+.rh-left{flex:1;min-width:0}
+.rh-label{font-size:12.5px;color:var(--ink-2);display:flex;align-items:center;gap:4px;white-space:nowrap}
+/* 78% 改用设计稿的金橙主色（原为 --green-d 绿色，设计稿采样 #E9A81A） */
+.rh-big{font-size:34px;font-weight:800;letter-spacing:-1.5px;color:#E9A81A;line-height:1.05;margin:6px 0 4px}
+.rh-big i{font-size:16px;font-style:normal;font-weight:700}
+.rh-desc{font-size:10.5px;color:var(--ink-3);line-height:1.4;white-space:nowrap}
+/* 插画原图是不透明奶油底（1024² JPEG），直接贴会露出方块。
+   这里用径向遮罩把四周羽化掉，让底自然融进粉色卡片，无需再产一张透明 PNG。 */
+.rh-egg{width:66px;height:66px;flex:0 0 auto;margin:0 -2px;
+  background:url(assets/eat/mascot-egg.jpg) center/cover no-repeat;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 46%,rgba(0,0,0,0) 78%);
+          mask-image:radial-gradient(circle at 50% 50%,#000 46%,rgba(0,0,0,0) 78%)}
+.rh-side{display:flex;flex-direction:column;gap:6px;width:96px;flex:0 0 auto}
+.rs{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.72);border-radius:10px;padding:5px 7px}
+.rs .ri{width:20px;height:20px;border-radius:7px;display:grid;place-items:center;font-size:11px;flex:0 0 auto}
+.rs .rk{font-size:9.5px;color:var(--ink-3);line-height:1.15}
+.rs .rv{font-size:11.5px;font-weight:700;line-height:1.15}
+
+/* 三餐概览 */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+/* 对齐设计稿：第 1 行「图标 + 餐名」左对齐，环居中，环下是「达标率」，最后才是标签 */
+.tc{border-radius:var(--r-sm);padding:11px 10px 12px;text-align:center;border:1px solid transparent}
+.tc .tc-hd{display:flex;align-items:center;gap:5px}
+.tc .tc-ico{font-size:15px;line-height:1}
+.tc .tc-name{font-size:11.5px;font-weight:600;color:var(--ink)}
+.tc .tc-ring{width:56px;height:56px;margin:8px auto 7px;position:relative}
+.tc .tc-ring .rt b{font-size:15px}
+.tc .tc-cap{font-size:11px;color:var(--ink-2)}
+.tc .tc-tag{font-size:10.5px;font-weight:600;margin-top:2px}
+.tc.g{background:#F1F8F4;border-color:#E2F1E8}
+.tc.g .tc-tag{color:var(--green-d)}
+.tc.o{background:#FDF5EA;border-color:#F8EBD6}
+.tc.o .tc-tag{color:#D08A2C}
+.tc.p{background:#F5F1FC;border-color:#EBE4F8}
+.tc.p .tc-tag{color:#7E6CC0}
+
+/* 趋势图 */
+.tabs{display:flex;gap:6px;background:var(--soft-2);border-radius:20px;padding:3px}
+.tabs button{font-size:11.5px;padding:5px 12px;border-radius:16px;color:var(--ink-2);font-weight:500}
+.tabs button.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:var(--sh-sm)}
+.chart{width:100%;height:auto;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.lg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-2)}
+.lg i{width:9px;height:9px;border-radius:50%;display:block}
+
+/* 对齐设计稿：插画在左、文案在右，Top4 另起一行占满宽度 */
+.most{display:flex;align-items:center;gap:8px}
+.most .mm-ico{font-size:36px;line-height:1;flex:0 0 auto}
+.most .mm-txt{min-width:0}
+.most .mm-name{font-size:13.5px;font-weight:700;line-height:1.2}
+.most .mm-num{font-size:21px;font-weight:800;color:#D08A2C;letter-spacing:-.5px;line-height:1.15}
+.most .mm-num i{font-size:11px;font-style:normal;font-weight:600;color:var(--ink-3)}
+.most .mm-sub{font-size:9.5px;color:#D08A2C;background:#FDF3E3;border-radius:6px;padding:1px 5px;display:inline-block;margin-top:3px;white-space:nowrap}
+.t4-head{font-size:11px;font-weight:600;color:var(--ink-2);margin:11px 0 7px}
+.top4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.t4{text-align:center;background:var(--soft);border-radius:12px;padding:7px 1px;border:1px solid var(--line)}
+.t4 .t4-ico{font-size:17px}
+.t4 .t4-n{font-size:10px;color:var(--ink-2);margin-top:2px}
+.t4 .t4-v{font-size:9.5px;color:var(--ink-3);margin-top:1px}
+.t4:first-child{background:var(--orange-soft);border-color:#F6E3C4}
+
+/* 对齐设计稿：大数字块在左、环在右，环心里是叶子图标而不是文字 */
+.div-wrap{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.dv-left{flex:1;min-width:0}
+.dv-big{font-size:27px;font-weight:800;letter-spacing:-1px;line-height:1;white-space:nowrap}
+.dv-big i{font-size:10.5px;font-style:normal;font-weight:600;color:var(--ink-2);letter-spacing:0;margin-left:3px}
+.dv-sub{font-size:10.5px;color:var(--ink-3);margin-top:5px;white-space:nowrap}
+.donut{width:68px;height:68px;position:relative;flex:0 0 auto}
+.donut .dt{position:absolute;inset:0;display:grid;place-items:center;align-content:center;text-align:center;line-height:1}
+.donut .dt span{font-size:17px;line-height:1}
+.dbar{display:flex;flex-direction:column;gap:8px}
+.db{display:flex;align-items:center;gap:6px}
+.db .db-ico{width:18px;height:18px;border-radius:6px;display:grid;place-items:center;font-size:9.5px;flex:0 0 auto}
+.db .dbk{font-size:10.5px;color:var(--ink-2);width:40px;flex:0 0 auto}
+.db .dbt{flex:1;height:7px;border-radius:6px;background:var(--soft-2);overflow:hidden}
+.db .dbt i{display:block;height:100%;border-radius:6px}
+.db .dbv{font-size:11px;font-weight:600;width:16px;text-align:right;flex:0 0 auto}
+
+/* 本月餐食记录：左栏统计、右栏柱图（对齐设计稿的双栏排布） */
+.meal-wrap{display:flex;gap:12px;align-items:flex-start}
+.mw-left{flex:0 0 128px}
+.mw-total{display:flex;align-items:center;gap:7px}
+.mw-ico{width:26px;height:26px;border-radius:9px;background:#EFEAFB;display:grid;place-items:center;font-size:13px;flex:0 0 auto}
+.mw-t{font-size:11px;color:var(--ink-2)}
+.mw-t b{font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.mw-3{display:flex;gap:9px;margin-top:13px}
+.mw-s{min-width:0}
+.mw-si{font-size:13px;display:block;line-height:1}
+.mw-sk{font-size:9.5px;color:var(--ink-3);display:block;margin-top:4px}
+.mw-sv{font-size:15px;font-weight:800;display:block;line-height:1.15}
+.mw-right{flex:1;min-width:0}
+.mw-cap{font-size:10px;color:var(--ink-3);margin-bottom:4px}
+/* 对齐设计稿：每天 3 根柱（绿 / 橙+蓝堆叠 / 紫），配色更粉嫩 */
+.bars{display:flex;align-items:flex-end;justify-content:space-between;height:62px;gap:4px}
+.bg{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:1.5px;height:100%}
+.bg>i{width:4.5px;border-radius:2.5px;display:block}
+.bstack{width:4.5px;border-radius:2.5px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.bstack i{display:block;width:100%}
+.bx{display:flex;justify-content:space-between;margin-top:6px}
+.bx span{font-size:9px;color:var(--ink-3)}
+
+/* 月度变化 */
+.deltas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dl{border-radius:var(--r-sm);padding:11px 8px;border:1px solid var(--line);background:var(--soft)}
+.dl .dl-k{font-size:10px;color:var(--ink-3);display:flex;align-items:center;gap:3px;line-height:1.3;min-height:26px;white-space:nowrap}
+/* 三项都代表「变好」（钠偏高天数下降也是好事），统一用绿色 */
+.dl .dl-v{font-size:13.5px;font-weight:700;margin-top:4px;color:var(--green-d)}
+.dl.fe{background:#F5F1FC;border-color:#EBE4F8}
+.dl.veg{background:#F1F8F4;border-color:#E2F1E8}
+.dl.na{background:#EAF3FC;border-color:#DCEAF8}
+
+/* 报告里的两列 */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* 覆盖层（子页面） */
+.overlay{
+  position:absolute;inset:0;background:var(--page);z-index:20;display:none;flex-direction:column;
+}
+.overlay.on{display:flex;animation:slide .26s cubic-bezier(.2,.7,.3,1)}
+@keyframes slide{from{transform:translateX(14%);opacity:.4}to{transform:none;opacity:1}}
+.ov-bar{
+  flex:0 0 auto;height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 12px;position:relative;
+}
+.ov-bar .ov-title{position:absolute;left:0;right:0;text-align:center;font-size:16.5px;font-weight:700;pointer-events:none}
+.back{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:var(--sh-sm);z-index:1}
+.back svg{width:18px;height:18px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ov-right{display:flex;align-items:center;gap:8px;z-index:1}
+.chip-btn{display:flex;align-items:center;gap:4px;font-size:12.5px;color:var(--ink-2);background:#fff;border-radius:18px;padding:7px 12px;box-shadow:var(--sh-sm);font-weight:500}
+.ov-body{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:24px}
+.ov-body::-webkit-scrollbar{display:none}
+.ov-head-sub{text-align:center;font-size:12.5px;color:var(--ink-2);line-height:1.6;margin:-6px 0 14px;padding:0 24px}
+
+/* 扫描配料表 */
+.scan-hero{position:relative;border-radius:var(--r);overflow:hidden;margin-bottom:16px;background:#F5EEE4}
+.scan-hero>img{width:100%;height:186px;object-fit:cover;display:block}
+/* 左侧压一层奶油色渐变，让手写体在照片上也读得清 */
+.scan-hero::after{content:"";position:absolute;left:0;top:0;bottom:0;width:64%;z-index:1;
+  background:linear-gradient(100deg,rgba(255,251,244,.94) 0%,rgba(255,251,244,.78) 50%,rgba(255,251,244,0) 100%)}
+.scan-hero .sh-note{
+  position:absolute;left:14px;top:22px;z-index:2;transform:rotate(-3.5deg);
+  font-family:"Kaiti SC","STKaiti",KaiTi,"楷体","KaiTi SC",cursive;
+  font-size:16px;font-weight:700;color:#63492E;letter-spacing:.6px;line-height:1.72;
+}
+.scan-hero .sh-note span{display:block}
+.scan-hero .sh-note i{display:block;width:118px;height:9px;margin-top:2px;
+  border-bottom:3px solid rgba(139,104,66,.55);border-radius:50%;transform:rotate(-1.5deg)}
+.big-btn{
+  width:100%;border-radius:20px;padding:16px 20px;display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,#9C93E8,#B4A0EC);color:#fff;box-shadow:0 10px 24px rgba(140,130,220,.32);
+  margin-bottom:20px;
+}
+.big-btn:active{transform:scale(.985)}
+.big-btn .bb-ico{width:46px;height:46px;border-radius:16px;background:rgba(255,255,255,.22);display:grid;place-items:center;flex:0 0 auto}
+.big-btn .bb-ico svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.big-btn .bb-t{flex:1;text-align:left}
+.big-btn .bb-t b{font-size:16.5px;font-weight:700;display:block}
+.big-btn .bb-t span{font-size:11.5px;opacity:.86;margin-top:2px;display:block}
+.big-btn .bb-arrow{font-size:20px;opacity:.9}
+.res-item{display:flex;gap:12px;align-items:center}
+.res-item img{width:56px;height:56px;border-radius:14px;object-fit:cover;flex:0 0 auto;background:var(--soft-2)}
+.res-item .chev{width:15px;height:15px;fill:none;stroke:var(--ink-3);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.res-t{flex:1;min-width:0}
+.res-t .rt-row{display:flex;align-items:center;gap:8px}
+.res-t .rt-name{font-size:15px;font-weight:700}
+.badge-safe{font-size:10.5px;font-weight:700;color:var(--green-d);background:var(--green-soft);padding:2px 8px;border-radius:20px}
+.res-t .rt-sub{font-size:11.5px;color:var(--ink-3);margin-top:5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-size:11px;color:var(--ink-2);background:var(--soft-2);border-radius:20px;padding:4px 10px}
+.ai-ana{position:relative;overflow:hidden;background:linear-gradient(135deg,#F0FAF4,#EAF6F0);border:1px solid #DFF0E6}
+.aa-head{display:flex;align-items:center;gap:12px;position:relative;z-index:2}
+.ai-ana .aa-ico{width:44px;height:44px;border-radius:50%;background:#D9F0E2;display:grid;place-items:center;flex:0 0 auto}
+.ai-ana .aa-ico svg{width:22px;height:22px;fill:none;stroke:#4FAE81;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ai-ana .aa-t{flex:1;min-width:0}
+.ai-ana .aa-t b{font-size:14px;font-weight:700;display:block}
+.ai-ana .aa-t span{font-size:11px;color:var(--ink-2);display:block;margin-top:2px}
+.ai-ana .aa-more{font-size:11px;color:#3E9E68;font-weight:700;background:#DCF3E5;border-radius:20px;padding:6px 12px;white-space:nowrap;position:relative;z-index:2}
+.ai-ana .aa-shield{position:absolute;right:-6px;bottom:-10px;width:104px;height:104px;z-index:1;opacity:.9;pointer-events:none}
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;padding-top:14px;border-top:1px dashed #D6EBE0;position:relative;z-index:2}
+.cap{text-align:center}
+.cap .cp-i{width:42px;height:42px;border-radius:50%;margin:0 auto 7px;display:grid;place-items:center;font-size:18px}
+.cap b{font-size:11.5px;font-weight:600;display:block}
+.cap span{font-size:10px;color:var(--ink-3);display:block;margin-top:3px;line-height:1.35}
+.scan-hint{display:flex;align-items:center;gap:11px;background:linear-gradient(120deg,#F1FAF4,#E9F6EE);
+  border:1px solid #DFF0E6;border-radius:var(--r);padding:11px 13px;margin-top:12px}
+.scan-hint .sh-mascot{width:42px;height:42px;border-radius:50%;flex:0 0 auto;
+  background:url(assets/eat/mascot-sheep.jpg) center/cover no-repeat;box-shadow:var(--sh-sm)}
+.scan-hint .sh-t{font-size:10.5px;color:#43795E;line-height:1.55;font-weight:600}
+
+/* AI 语音助手 */
+.voice-body{flex:1;overflow-y:auto;padding:0 16px 12px;scrollbar-width:none;display:flex;flex-direction:column;gap:14px}
+.voice-body::-webkit-scrollbar{display:none}
+.msg{display:flex;gap:9px;align-items:flex-start;max-width:88%}
+.msg.me{align-self:flex-end;flex-direction:row-reverse}
+.msg .av{width:34px;height:34px;border-radius:50%;flex:0 0 auto;overflow:hidden;background:#fff;box-shadow:var(--sh-sm)}
+.msg .av img{width:100%;height:100%;object-fit:cover}
+.bubble{background:#fff;border-radius:16px;padding:11px 14px;font-size:13.5px;line-height:1.62;box-shadow:var(--sh-sm)}
+.msg.bot .bubble{border-top-left-radius:5px}
+.msg.me .bubble{background:#DDF0E3;border-top-right-radius:5px;color:#2F4A3A}
+.voice-mic{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2)}
+.tl-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;width:100%}
+.tl-head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:linear-gradient(135deg,#FDF0EC,#FBF3E8)}
+.tl-head b{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.tl-head span{font-size:11px;color:var(--ink-3)}
+.tl-list{padding:6px 15px 12px}
+.tl-row{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.tl-row:last-child{border-bottom:none}
+.tl-when{width:52px;flex:0 0 auto;text-align:center}
+.tl-dot{width:24px;height:24px;border-radius:50%;margin:0 auto 5px;display:grid;place-items:center;font-size:12px;color:#fff}
+.tl-when b{font-size:11.5px;display:block}
+.tl-when span{font-size:10px;color:var(--ink-3)}
+.tl-main{flex:1;min-width:0}
+.tl-title{font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tag-new{font-size:10px;font-weight:700;color:#D08A2C;background:var(--orange-soft);padding:2px 7px;border-radius:20px}
+.tl-note{font-size:11.5px;color:var(--ink-3);margin-top:4px;line-height:1.5}
+.tl-row.alert{background:#FFF8F0;margin:0 -15px;padding:12px 15px;border-radius:12px;border-bottom:none}
+.tl-advice{margin:4px 15px 14px;background:var(--blue-soft);border-radius:14px;padding:12px 14px;font-size:12px;line-height:1.65;color:#4A6A8A;display:flex;gap:8px}
+.tl-advice .ia{flex:0 0 auto;font-size:14px}
+.voice-foot{
+  flex:0 0 auto;padding:12px 16px 22px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:13px;
+}
+.vf-btn{width:44px;height:44px;border-radius:14px;background:var(--soft-2);display:grid;place-items:center;flex:0 0 auto}
+.vf-btn svg{width:21px;height:21px;fill:none;stroke:var(--ink-2);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.vf-mic{
+  width:56px;height:56px;border-radius:50%;flex:0 0 auto;
+  background:linear-gradient(140deg,#A99BF0,#8B85E0);
+  display:grid;place-items:center;box-shadow:0 8px 20px rgba(139,133,224,.36);
+}
+.vf-mic svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.vf-end{font-size:12.5px;color:var(--ink-2);font-weight:600;padding:0 6px}
+.wave{display:flex;align-items:center;gap:2.5px;height:20px}
+.wave i{width:3px;height:8px;border-radius:3px;background:#C9C2EF;display:block;animation:wv 1s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.15s}.wave i:nth-child(3){animation-delay:.3s}
+.wave i:nth-child(4){animation-delay:.45s}.wave i:nth-child(5){animation-delay:.6s}
+@keyframes wv{0%,100%{height:6px}50%{height:18px}}
+
+/* 备餐建议 */
+.age-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--brand);background:var(--brand-soft);border-radius:18px;padding:6px 12px;font-weight:600}
+.prep-hero{background:linear-gradient(135deg,#FFF8EE,#FDF2F0);border:1px solid #F6EADB;position:relative;overflow:hidden}
+.prep-hero .ph-t{font-size:12px;color:#C99A55;font-weight:700}
+.prep-hero .ph-big{font-size:20px;font-weight:800;line-height:1.35;margin:8px 0 16px;letter-spacing:-.4px;max-width:60%}
+.prep-hero>img{position:absolute;right:-10px;bottom:-4px;width:154px;z-index:1;
+  filter:drop-shadow(0 8px 16px rgba(178,138,96,.16))}
+.prep-ring{display:flex;align-items:center;gap:11px;position:relative;z-index:2;max-width:62%}
+.prep-ring .pr-t b{font-size:12.5px;font-weight:700;display:block}
+.prep-ring .pr-t span{font-size:10px;color:var(--ink-2);line-height:1.45;display:block;margin-top:3px}
+.nu{padding:0 7px;border-radius:14px}
+.nu:nth-child(1),.nu:nth-child(3){background:linear-gradient(180deg,#F4FBF7,#FAFEFC)}
+.nu:nth-child(4){background:linear-gradient(180deg,#FAF6FE,#FDFBFE)}
+.nu .nu-k{font-size:9px;color:var(--ink-2);display:flex;align-items:center;gap:4px;white-space:nowrap;letter-spacing:-.2px}
+.nu .nu-k .nu-i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:10px;flex:0 0 auto}
+.nu .nu-v{font-size:17px;font-weight:800;letter-spacing:-.5px;margin:8px 0 0}
+.nu .nu-bar{height:5px;border-radius:4px;background:#EFEAE3;margin-top:8px;overflow:hidden}
+.nu .nu-bar i{display:block;height:100%;border-radius:4px}
+.next-card{background:linear-gradient(135deg,#FFF3F0,#FDECEC);border:1px solid #FADCD8;display:flex;align-items:center;gap:12px}
+.next-card .nc-t{flex:1;min-width:0}
+.next-card .nc-name{font-size:20px;font-weight:800;margin:8px 0 5px;letter-spacing:-.3px;
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.next-card .nc-tag{font-size:9.5px;font-weight:700;color:#C97A6E;background:#FDE8E4;
+  border:1px solid #F7D3CD;border-radius:12px;padding:3px 8px;letter-spacing:0;white-space:nowrap}
+.next-card .chev{width:15px;height:15px;fill:none;stroke:#D9A79C;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.next-card img{width:88px;height:88px;border-radius:18px;object-fit:cover;flex:0 0 auto}
+.reason-card{background:linear-gradient(140deg,#F2FAF5,#EDF7F1);border:1px solid #E0F0E7}
+.reason{font-size:12.5px;line-height:1.78;color:#4A6355}
+.reason b{color:#2F5C46}
+.src-row{display:flex;align-items:center;justify-content:space-between;background:#fff;
+  border:1px solid #DCEBE2;border-radius:14px;padding:11px 13px;margin-top:13px}
+.src-row .sr-l{font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.src-row .sr-r{font-size:11.5px;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:4px}
+.next-card .nc-k{font-size:11.5px;color:#C97A6E;display:flex;align-items:center;gap:5px;font-weight:700}
+.next-card .nc-sub{font-size:11.5px;color:var(--ink-2)}
+.share-btn{width:100%;border-radius:18px;padding:15px;background:linear-gradient(135deg,#7ECBA0,#63BE8B);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px rgba(99,190,139,.3);margin-top:4px}
+.share-btn svg{width:19px;height:19px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.share-note{text-align:center;font-size:11.5px;color:var(--ink-3);margin:12px 0 6px;line-height:1.6}
+
+/* 饮食详情 */
+/* ---- 膳食详情（对齐设计稿） ---- */
+.dhero{position:relative;border-radius:var(--r);padding:14px;margin-bottom:14px;overflow:hidden;min-height:158px;
+  background:linear-gradient(150deg,#FFF7EC 0%,#FDEFE2 100%);border:1px solid #F6E7D8}
+.dhero-txt{position:relative;z-index:5;max-width:50%}
+.dhero-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.82);border-radius:14px;
+  padding:4px 10px;font-size:10.5px;color:var(--ink-2);font-weight:600}
+.dhero-title{font-size:25px;font-weight:800;letter-spacing:-.6px;margin:9px 0 7px;line-height:1.1}
+.dhero-fit{display:inline-flex;align-items:center;gap:4px;background:#E2F5E9;color:#3E9E68;border-radius:14px;
+  padding:4px 9px;font-size:10.5px;font-weight:700}
+.dhero-desc{font-size:11px;color:var(--ink-2);line-height:1.6;margin-top:10px}
+/* 右侧叠图：菜品大图出血在右下方，宝宝小图压在其右上角 */
+.dhero-dish{position:absolute;right:-26px;bottom:-30px;width:206px;height:180px;border-radius:30px;object-fit:cover;z-index:1;
+  box-shadow:0 12px 28px rgba(178,138,96,.22)}
+.dhero-baby{position:absolute;right:-8px;top:4px;width:84px;height:84px;border-radius:50%;object-fit:cover;z-index:3;
+  border:3px solid #fff;box-shadow:0 5px 14px rgba(178,138,96,.2)}
+.dhero-say{position:absolute;right:70px;top:0;z-index:4;background:#fff;border-radius:12px;padding:4px 9px;
+  font-size:10px;font-weight:700;color:#E0805C;white-space:nowrap;box-shadow:0 3px 10px rgba(178,138,96,.16)}
+
+/* 营养成分：左环 + 右 4 个营养瓦片 */
+.nut-top{display:flex;align-items:flex-start;gap:12px}
+.nut-ring-wrap{flex:0 0 auto;text-align:center}
+.nut-ring{width:88px;height:88px;position:relative}
+.nut-ring .rt b{font-size:21px}
+.nut-cap{font-size:10px;color:var(--ink-2);margin-top:6px;font-weight:600}
+.nut-tiles{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.ntile{text-align:center;min-width:0}
+.ntile .nt-i{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;font-size:13.5px;margin:0 auto}
+.ntile .nt-k{font-size:8.5px;color:var(--ink-2);margin-top:5px;line-height:1.15;white-space:nowrap}
+.ntile .nt-v{font-size:13px;font-weight:800;margin-top:3px;letter-spacing:-.3px}
+.ntile .nt-bar{height:4px;border-radius:3px;background:var(--soft-2);margin-top:5px;overflow:hidden}
+.ntile .nt-bar i{display:block;height:100%;border-radius:3px}
+.ntile .nt-s{font-size:8.5px;font-weight:700;margin-top:4px}
+.ntile.ok .nt-s{color:#3E9E68}
+.ntile.low .nt-s{color:#D9756F}
+
+/* 食材列表：圆形食材 + 右箭头 */
+.foods-row{display:flex;align-items:center;gap:8px}
+.fitem{flex:1;text-align:center;min-width:0}
+.fitem .fi-c{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-size:22px;margin:0 auto;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.035)}
+.fitem .fi-n{font-size:10.5px;color:var(--ink-2);margin-top:6px;white-space:nowrap}
+.foods-arrow{flex:0 0 auto;width:14px;height:14px;fill:none;stroke:var(--ink-3);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.fl-hd{display:flex;align-items:center;gap:6px}
+.fl-hd .fl-ico{width:20px;height:20px;border-radius:7px;background:#E7F6EE;display:grid;place-items:center;font-size:11px}
+
+/* AI 营养搭配推荐（紫色 + 吉祥物） */
+.ai-rec{position:relative;border-radius:var(--r);padding:14px;margin-bottom:14px;overflow:hidden;
+  background:linear-gradient(135deg,#F4F0FC,#EEE8FA);border:1px solid #E6DFF7;display:flex;gap:8px}
+.ai-rec .ar-txt{position:relative;z-index:5;flex:1;min-width:0}
+.ai-rec .ar-h{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:#5B4FA0}
+.ai-rec .ar-h .ar-av{width:26px;height:26px;border-radius:9px;background:#E2D9F9;display:grid;place-items:center;font-size:14px;flex:0 0 auto}
+.ai-rec p{margin:9px 0 0;font-size:11.5px;line-height:1.7;color:#6B5FA8}
+.ai-rec .ar-btn{margin-top:11px;display:inline-flex;align-items:center;gap:5px;background:#DCD2F7;color:#54479C;
+  border-radius:16px;padding:7px 13px;font-size:11px;font-weight:700}
+.ai-rec .ar-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ai-rec .ar-art{position:relative;flex:0 0 80px;min-height:96px}
+.ai-rec .ar-say{position:absolute;left:-10px;top:0;z-index:6;background:#fff;border-radius:10px;padding:4px 7px;
+  font-size:9px;line-height:1.35;color:#7E70B8;font-weight:600;width:74px;box-shadow:0 3px 10px rgba(120,100,190,.14)}
+.ai-rec .ar-mascot{position:absolute;right:-8px;bottom:-12px;width:76px;height:76px;
+  background:url(assets/eat/mascot-egg.jpg) center/cover no-repeat;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 46%,rgba(0,0,0,0) 78%);
+          mask-image:radial-gradient(circle at 50% 50%,#000 46%,rgba(0,0,0,0) 78%)}
+
+/* 餐食记录 · 语音助手 入口条 */
+.voice-row{display:flex;align-items:center;gap:10px;padding:12px 13px;cursor:pointer;
+  background:linear-gradient(135deg,#F2FAF5,#EAF6EF);border:1px solid #E0F0E7}
+.voice-row .vr-ico{width:38px;height:38px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;font-size:17px;
+  background:linear-gradient(140deg,#8FD9B6,#63BE8B);box-shadow:0 6px 14px rgba(99,190,139,.32)}
+.voice-row .vr-txt{flex:1;min-width:0}
+.voice-row .vr-t{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:5px}
+.voice-row .vr-ai{font-size:8.5px;font-weight:700;color:#fff;background:#8B85E0;border-radius:5px;padding:1px 4px}
+.voice-row .vr-s{font-size:10px;color:var(--ink-3);margin-top:3px}
+.voice-row .vr-chip{flex:0 0 auto;background:#fff;border-radius:16px;padding:6px 9px;font-size:9.5px;color:var(--ink-2);
+  display:flex;align-items:center;gap:4px;box-shadow:var(--sh-sm);max-width:126px;line-height:1.3}
+
+/* 锁屏 */
+.lock{position:absolute;inset:0;z-index:30;display:none;overflow:hidden}
+.lock.on{display:block;animation:fade .3s ease}
+.lock-bg{position:absolute;inset:0}
+.lock-bg img{width:100%;height:100%;object-fit:cover;object-position:center 42%}
+.lock-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,248,240,.55) 0%,rgba(255,248,240,.08) 26%,rgba(60,45,30,.28) 100%)}
+.lock-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column}
+.lock-sb{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 30px;font-size:13.5px;font-weight:600;color:#5A4A38}
+.lock-lock{margin:14px auto 0;width:26px;height:26px;display:grid;place-items:center}
+.lock-lock svg{width:20px;height:20px;fill:none;stroke:#6B5A48;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.lock-time{text-align:center;font-size:78px;font-weight:600;letter-spacing:-3px;color:#4A3B2C;line-height:1;margin-top:14px;font-variant-numeric:tabular-nums;text-shadow:0 2px 18px rgba(255,250,244,.7),0 1px 4px rgba(255,250,244,.55)}
+.lock-date{text-align:center;font-size:17px;font-weight:500;color:#5A4A38;margin-top:10px;text-shadow:0 1px 12px rgba(255,250,244,.95),0 1px 3px rgba(255,250,244,.9)}
+.notif{
+  margin:26px 14px 0;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);
+  border-radius:20px;padding:13px 14px;box-shadow:0 10px 30px rgba(80,60,40,.16);
+}
+.notif-head{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.notif-ico{width:26px;height:26px;border-radius:8px;background:linear-gradient(140deg,#FFE3C4,#FFC9A3);display:grid;place-items:center;font-size:14px;flex:0 0 auto}
+.notif-head b{font-size:13px;font-weight:700;flex:1}
+.notif-head span{font-size:11px;color:var(--ink-3)}
+.notif p{margin:0;font-size:12.5px;line-height:1.6;color:#4A4238}
+.notif p b{color:#3D3A35}
+.lock-foot{margin-top:auto;padding:0 0 14px;display:flex;align-items:center;justify-content:space-between;padding-left:34px;padding-right:34px}
+.lock-foot .lf{width:48px;height:48px;border-radius:50%;background:rgba(60,48,36,.32);backdrop-filter:blur(8px);display:grid;place-items:center}
+.lock-foot .lf svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lock-home{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:120px;height:5px;border-radius:4px;background:rgba(60,48,36,.5);z-index:3}
+
+/* 通用小工具 */
+.mb0{margin-bottom:0}.mt10{margin-top:10px}.mt12{margin-top:12px}.mt14{margin-top:14px}
+.pad-x{padding-left:16px;padding-right:16px}
+.divider{height:1px;background:var(--line);margin:13px 0}
+.note{font-size:11px;color:var(--ink-3);line-height:1.6;text-align:center;padding:6px 8px 4px}
+.list-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.list-row:last-child{border-bottom:none}
+.list-row .lr-i{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:17px;flex:0 0 auto}
+.list-row .lr-t{flex:1;font-size:14px;font-weight:500}
+.list-row .lr-s{font-size:11.5px;color:var(--ink-3);margin-top:2px;font-weight:400}
+.demo-note{font-size:10.5px;color:var(--ink-3);text-align:center;line-height:1.7;padding:18px 20px 4px}
+
+@media (max-width:460px){
+  body{padding:0;background:var(--page)}
+  .phone{width:100%;height:100dvh;border-radius:0;box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <!-- 状态栏 -->
+  <div class="statusbar" id="sb">
+    <span>9:41</span>
+    <span class="sb-right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="7" width="3" height="4" rx="1" fill="#3D3A35"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#3D3A35"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#3D3A35"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#3D3A35"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 10.5l2.2-2.6a3.4 3.4 0 0 0-4.4 0L8 10.5z" fill="#3D3A35"/><path d="M8 5.2c1.7 0 3.2.6 4.4 1.7l1.3-1.5A8.9 8.9 0 0 0 8 3.1a8.9 8.9 0 0 0-5.7 2.3l1.3 1.5A6.6 6.6 0 0 1 8 5.2z" fill="#3D3A35"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#3D3A35" stroke-opacity=".4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="#3D3A35"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="#3D3A35" fill-opacity=".5"/></svg>
+    </span>
+  </div>
+
+  <!-- 主屏 -->
+  <main class="screen" id="screen">
+
+    <!-- ============ 首页 ============ -->
+    <section class="view on" data-view="home">
+      <div class="appbar">
+        <div class="hd-left">
+          <div class="hd-logo"><img src="assets/eat/mascot-sheep.jpg" alt=""></div>
+          <div>
+            <div class="wordmark">babycare</div>
+            <div class="hd-tag">用科技，守护宝宝的每一餐</div>
+          </div>
+        </div>
+        <div class="hd-baby">
+          <div class="hb-av"><img src="assets/eat/avatar-baby.jpg" alt=""></div>
+          <div class="hb-t">小宝 ∨<span>11个月 · 男宝</span></div>
+        </div>
+      </div>
+
+      <div class="pad">
+        <section class="card hero2" onclick="go('prep')">
+          <div class="h2-txt">
+            <span class="h2-chip">💗 今日营养评价</span>
+            <div class="h2-title" data-role="hero-title">宝宝今天<br>吃的很好！</div>
+            <div class="h2-sub" data-role="hero-sub">营养均衡，继续保持~</div>
+          </div>
+          <img class="h2-art" src="assets/eat/hero-eat.png" alt="">
+          <div class="h2-right">
+            <div class="h2-ring">
+              <svg viewBox="0 0 92 92">
+                <defs>
+                  <linearGradient id="hgHome" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#AEE2C6"/>
+                    <stop offset=".55" stop-color="#7ECBA0"/>
+                    <stop offset="1" stop-color="#8FC8EA"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="46" cy="46" r="39" fill="none" stroke="#ECEAF5" stroke-width="8"/>
+                <g transform="rotate(-90 46 46)">
+                  <circle cx="46" cy="46" r="39" fill="none" stroke="url(#hgHome)" stroke-width="8"
+                    stroke-linecap="round" stroke-dasharray="183.8 245.1"/>
+                </g>
+              </svg>
+              <span class="h2-leaf">🌿</span>
+              <div class="rt"><span>营养达标</span><b data-role="ring-value">75<i>%</i></b></div>
+            </div>
+            <div class="h2-up" data-role="hero-delta">比昨天 ↑12%</div>
+          </div>
+        </section>
+
+        <div class="nut4" style="margin-bottom:16px">
+          <div class="n4 ok" data-role="tile" data-metric="protein"><div class="n4-i" style="background:#FDF6E6">🥚</div><div class="n4-k">蛋白质</div><div class="n4-v">82%</div><div class="n4-bar"><i style="width:82%;background:#6FC79A"></i></div><div class="n4-s">已达标</div></div>
+          <div class="n4 mid" data-role="tile" data-metric="vegetable"><div class="n4-i" style="background:#E7F6EE">🥬</div><div class="n4-k">蔬菜</div><div class="n4-v">68%</div><div class="n4-bar"><i style="width:68%;background:#F5C24E"></i></div><div class="n4-s">接近达标</div></div>
+          <div class="n4 ok" data-role="tile" data-metric="staple"><div class="n4-i" style="background:#EAF3FC">🌾</div><div class="n4-k">碳水化合物</div><div class="n4-v">78%</div><div class="n4-bar"><i style="width:78%;background:#8FC4F0"></i></div><div class="n4-s">已达标</div></div>
+          <div class="n4 low" data-role="tile" data-metric="iron"><div class="n4-i" style="background:#FDECEC">🍅</div><div class="n4-k">富铁食物</div><div class="n4-v">54%</div><div class="n4-bar"><i style="width:54%;background:#F5A8B0"></i></div><div class="n4-s">需补充</div></div>
+        </div>
+
+        <div class="sec-head"><div class="sec-title">今日三餐</div><span class="sec-more" onclick="go('records')">查看全部<svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span></div>
+        <div class="m3" style="margin-bottom:16px">
+          <div class="m3c" data-role="meal" onclick="go('detail')">
+            <div class="m3-h">🌅 早餐 07:45</div>
+            <img class="m3-img" src="assets/eat/meal-oatmeal.jpg" alt="">
+            <div class="m3-n"><em>燕麦粥 + 香蕉</em><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+            <div class="m3-t ok">✅ 营养均衡</div>
+          </div>
+          <div class="m3c" data-role="meal" onclick="go('detail')">
+            <div class="m3-h">🌞 午餐 12:30</div>
+            <img class="m3-img" src="assets/eat/dish-tomato-egg.jpg" alt="">
+            <div class="m3-n"><em>番茄炒蛋</em><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+            <div class="m3-t ok">✅ 营养均衡</div>
+          </div>
+          <div class="m3c" data-role="meal" onclick="go('prep')">
+            <div class="m3-h">🌙 晚餐 18:15</div>
+            <img class="m3-img" src="assets/eat/meal-broccoli-shrimp.jpg" alt="">
+            <div class="m3-n"><em>西兰花虾仁</em><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+            <div class="m3-t low">⚠️ 需补充富铁食物</div>
+          </div>
+        </div>
+
+        <div class="act3" style="margin-bottom:14px">
+          <div class="a3" onclick="go('voice')">
+            <div class="a3-i" style="background:#F3EDFC">🎤</div>
+            <div class="a3-t">语音助手<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+            <div class="a3-s">说一句话 · 自动记录</div>
+          </div>
+          <div class="a3" onclick="go('report')">
+            <div class="a3-i" style="background:#EAF3FC">📄</div>
+            <div class="a3-t">营养报告<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+            <div class="a3-s">日报 / 周报 / 月报</div>
+          </div>
+          <div class="a3" onclick="go('family')">
+            <div class="a3-i" style="background:#FDECEC">👥</div>
+            <div class="a3-t">家庭成员<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+            <div class="a3-s">3 人 · 信息同步</div>
+          </div>
+        </div>
+
+        <div class="prep-bn" onclick="go('prep')">
+          <div class="pb-ico">👨‍🍳</div>
+          <div class="pb-t">
+            <div class="pb-h">备餐建议 <span class="pb-ai">AI</span></div>
+            <div class="pb-s" data-role="prep-summary">下一餐吃什么？让 AI 为宝宝定制营养方案</div>
+          </div>
+          <div class="pb-go">去看看 ›</div>
+          <img class="pb-art" src="assets/eat/meal-broccoli-shrimp.jpg" alt="">
+        </div>
+
+        <div class="api-bar" data-role="api-bar" hidden>
+          <span class="ab-dot"></span>
+          <span class="ab-t" data-role="api-text">已连接本地后端</span>
+          <span class="ab-s" data-role="api-src"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 餐食记录 ============ -->
+    <section class="view" data-view="records">
+      <div class="appbar"><div class="sec-title" style="font-size:19px">餐食记录</div><span class="chip-btn" onclick="go('scan')">＋ 记录一餐</span></div>
+      <div class="pad">
+        <div class="sec-head"><div class="sec-title">今天 · 9月27日</div><span class="sec-more">共 3 餐</span></div>
+        <section class="card tight" style="margin-bottom:16px">
+          <div class="meal-row" onclick="go('detail')"><img class="meal-thumb" src="assets/eat/mascot-egg.jpg" alt=""><div class="meal-info"><div class="meal-name">早餐 · 鸡蛋米粉</div><div class="meal-meta">07:20 · 蛋白质 78%</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="meal-row" onclick="go('detail')"><img class="meal-thumb" src="assets/eat/dish-tomato-egg.jpg" alt=""><div class="meal-info"><div class="meal-name">午餐 · 番茄炒蛋</div><div class="meal-meta">12:30 · 蔬菜 82%</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="meal-row" onclick="go('detail')"><img class="meal-thumb" src="assets/eat/dish-liver.jpg" alt=""><div class="meal-info"><div class="meal-name">晚餐 · 猪肝泥</div><div class="meal-meta">18:40 · 富铁食物</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+        </section>
+        <div class="sec-head"><div class="sec-title">昨天 · 9月26日</div><span class="sec-more">共 3 餐</span></div>
+        <section class="card tight">
+          <div class="meal-row" onclick="go('detail')"><img class="meal-thumb" src="assets/eat/food-yogurt.jpg" alt=""><div class="meal-info"><div class="meal-name">加餐 · 原味酸奶</div><div class="meal-meta">15:10 · 乳制品</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="meal-row" onclick="go('detail')"><img class="meal-thumb" src="assets/eat/dish-tomato-egg.jpg" alt=""><div class="meal-info"><div class="meal-name">午餐 · 番茄炒蛋</div><div class="meal-meta">12:10 · 蔬菜 76%</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="meal-row" onclick="go('detail')"><img class="meal-thumb" src="assets/eat/mascot-egg.jpg" alt=""><div class="meal-info"><div class="meal-name">早餐 · 蒸蛋羹</div><div class="meal-meta">07:40 · 蛋白质 71%</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ============ 营养报告 ============ -->
+    <section class="view" data-view="report">
+      <div class="appbar">
+        <button class="back" onclick="go('home')" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <div class="sec-title" style="font-size:17px">营养报告</div>
+        <span class="chip-btn">9月27日 ▾</span>
+      </div>
+      <div class="pad">
+
+        <section class="card report-hero">
+          <div class="rh-left">
+            <div class="rh-label">本周整体达标 <span class="info">ⓘ</span></div>
+            <div class="rh-big">78<i>%</i></div>
+            <div class="rh-desc">营养摄入均衡，继续保持哦~</div>
+          </div>
+          <div class="rh-egg" role="img" aria-label="蛋宝宝插画"></div>
+          <div class="rh-side">
+            <div class="rs"><div class="ri" style="background:#F2EDFC">🥩</div><div><div class="rk">富铁食物</div><div class="rv">5<span style="font-size:9px;color:#ABA298">/7天</span></div></div></div>
+            <div class="rs"><div class="ri" style="background:#E7F6EE">🥬</div><div><div class="rk">蔬菜种类</div><div class="rv">9<span style="font-size:9px;color:#ABA298">种</span></div></div></div>
+            <div class="rs"><div class="ri" style="background:#EAF3FC">🧂</div><div><div class="rk">钠控制</div><div class="rv">4<span style="font-size:9px;color:#ABA298">/7天</span></div></div></div>
+          </div>
+        </section>
+
+        <div class="sec-head"><div class="sec-title">三餐营养概览 <span class="info">ⓘ</span></div></div>
+        <div class="three" style="margin-bottom:16px">
+          <div class="tc g"><div class="tc-hd"><span class="tc-ico">🌅</span><span class="tc-name">早餐</span></div><div class="tc-ring"><svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)"><circle cx="28" cy="28" r="23" fill="none" stroke="#DCEFE4" stroke-width="6"/><circle cx="28" cy="28" r="23" fill="none" stroke="#6FC79A" stroke-width="6" stroke-linecap="round" stroke-dasharray="98.3 144.5"/></svg><div class="rt"><b>68<i>%</i></b></div></div><div class="tc-cap">达标率</div><div class="tc-tag">营养均衡</div></div>
+          <div class="tc o"><div class="tc-hd"><span class="tc-ico">🌞</span><span class="tc-name">午餐</span></div><div class="tc-ring"><svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)"><circle cx="28" cy="28" r="23" fill="none" stroke="#F8E6C8" stroke-width="6"/><circle cx="28" cy="28" r="23" fill="none" stroke="#F5B461" stroke-width="6" stroke-linecap="round" stroke-dasharray="118.5 144.5"/></svg><div class="rt"><b>82<i>%</i></b></div></div><div class="tc-cap">达标率</div><div class="tc-tag">表现优秀</div></div>
+          <div class="tc p"><div class="tc-hd"><span class="tc-ico">🌙</span><span class="tc-name">晚餐</span></div><div class="tc-ring"><svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)"><circle cx="28" cy="28" r="23" fill="none" stroke="#E8E0F7" stroke-width="6"/><circle cx="28" cy="28" r="23" fill="none" stroke="#B8A5E8" stroke-width="6" stroke-linecap="round" stroke-dasharray="102.6 144.5"/></svg><div class="rt"><b>71<i>%</i></b></div></div><div class="tc-cap">达标率</div><div class="tc-tag">继续加油</div></div>
+        </div>
+
+        <section class="card">
+          <div class="sec-head" style="margin-bottom:10px">
+            <div class="sec-title">营养摄入趋势 <span class="info">ⓘ</span></div>
+            <div class="tabs"><button class="on">近7天</button><button>近30天</button><button>近90天</button></div>
+          </div>
+          <svg class="chart" viewBox="0 0 320 150" preserveAspectRatio="none" style="height:150px">
+            <line x1="10" y1="120" x2="310" y2="120" stroke="#F1E9DD" stroke-width="1"/>
+            <line x1="10" y1="65" x2="310" y2="65" stroke="#F1E9DD" stroke-width="1" stroke-dasharray="3 4"/>
+            <line x1="10" y1="10" x2="310" y2="10" stroke="#F1E9DD" stroke-width="1" stroke-dasharray="3 4"/>
+            <text x="0" y="123" font-size="9" fill="#ABA298">0%</text>
+            <text x="0" y="68" font-size="9" fill="#ABA298">50%</text>
+            <text x="0" y="13" font-size="9" fill="#ABA298">100%</text>
+            <polyline points="10,59.5 60,51.8 110,56.2 160,43 210,47.4 260,40.8 310,34.2" fill="none" stroke="#F5B461" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="10,67.2 60,59.5 110,54 160,56.2 210,51.8 260,45.2 310,29.8" fill="none" stroke="#6FC79A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="10,54 60,56.2 110,48.5 160,51.8 210,43 260,45.2 310,41.9" fill="none" stroke="#9CC6F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="10,81.5 60,76 110,78.2 160,70.5 210,73.8 260,65 310,54" fill="none" stroke="#B8A5E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="#F5B461"><circle cx="10" cy="59.5" r="2.6"/><circle cx="60" cy="51.8" r="2.6"/><circle cx="110" cy="56.2" r="2.6"/><circle cx="160" cy="43" r="2.6"/><circle cx="210" cy="47.4" r="2.6"/><circle cx="260" cy="40.8" r="2.6"/><circle cx="310" cy="34.2" r="2.6"/></g>
+            <g fill="#6FC79A"><circle cx="10" cy="67.2" r="2.6"/><circle cx="60" cy="59.5" r="2.6"/><circle cx="110" cy="54" r="2.6"/><circle cx="160" cy="56.2" r="2.6"/><circle cx="210" cy="51.8" r="2.6"/><circle cx="260" cy="45.2" r="2.6"/><circle cx="310" cy="29.8" r="2.6"/></g>
+            <g fill="#9CC6F0"><circle cx="10" cy="54" r="2.6"/><circle cx="60" cy="56.2" r="2.6"/><circle cx="110" cy="48.5" r="2.6"/><circle cx="160" cy="51.8" r="2.6"/><circle cx="210" cy="43" r="2.6"/><circle cx="260" cy="45.2" r="2.6"/><circle cx="310" cy="41.9" r="2.6"/></g>
+            <g fill="#B8A5E8"><circle cx="10" cy="81.5" r="2.6"/><circle cx="60" cy="76" r="2.6"/><circle cx="110" cy="78.2" r="2.6"/><circle cx="160" cy="70.5" r="2.6"/><circle cx="210" cy="73.8" r="2.6"/><circle cx="260" cy="65" r="2.6"/><circle cx="310" cy="54" r="2.6"/></g>
+            <g font-size="9.5" fill="#ABA298" text-anchor="middle">
+              <text x="10" y="140">9/21</text><text x="60" y="140">9/22</text><text x="110" y="140">9/23</text><text x="160" y="140">9/24</text><text x="210" y="140">9/25</text><text x="260" y="140">9/26</text><text x="310" y="140">9/27</text>
+            </g>
+          </svg>
+          <div class="legend">
+            <span class="lg"><i style="background:#F5B461"></i>蛋白质</span>
+            <span class="lg"><i style="background:#6FC79A"></i>蔬菜</span>
+            <span class="lg"><i style="background:#9CC6F0"></i>碳水化合物</span>
+            <span class="lg"><i style="background:#B8A5E8"></i>富铁食物</span>
+          </div>
+        </section>
+
+        <div class="two">
+          <section class="card" style="margin-bottom:0">
+            <div class="sec-head" style="margin-bottom:10px"><div class="sec-title" style="font-size:13px">这个月宝宝吃得最多 <span class="info">ⓘ</span></div></div>
+            <div class="most">
+              <div class="mm-ico">🥚</div>
+              <div class="mm-txt">
+                <div class="mm-name">鸡蛋</div>
+                <div class="mm-num">12<i>次</i></div>
+                <div class="mm-sub">本月出现最多</div>
+              </div>
+            </div>
+            <div class="t4-head">👑 Top 4 食材</div>
+            <div class="top4">
+              <div class="t4"><div class="t4-ico">🥚</div><div class="t4-n">鸡蛋</div><div class="t4-v">12次</div></div>
+              <div class="t4"><div class="t4-ico">🥩</div><div class="t4-n">牛肉</div><div class="t4-v">8次</div></div>
+              <div class="t4"><div class="t4-ico">🍅</div><div class="t4-n">番茄</div><div class="t4-v">7次</div></div>
+              <div class="t4"><div class="t4-ico">🎃</div><div class="t4-n">南瓜</div><div class="t4-v">6次</div></div>
+            </div>
+          </section>
+          <section class="card" style="margin-bottom:0">
+            <div class="sec-head" style="margin-bottom:10px"><div class="sec-title" style="font-size:14px">食物多样性 <span class="info">ⓘ</span></div></div>
+            <div class="div-wrap">
+              <div class="dv-left">
+                <div class="dv-big">32<i>种食材</i></div>
+                <div class="dv-sub">本月累计尝试</div>
+              </div>
+              <div class="donut">
+                <svg width="68" height="68" viewBox="0 0 104 104" style="transform:rotate(-90deg)">
+                  <circle cx="52" cy="52" r="42" fill="none" stroke="#F5C46B" stroke-width="14" stroke-dasharray="57.7 206.2"/>
+                  <circle cx="52" cy="52" r="42" fill="none" stroke="#6FC79A" stroke-width="14" stroke-dasharray="82.5 181.4" stroke-dashoffset="-57.7"/>
+                  <circle cx="52" cy="52" r="42" fill="none" stroke="#9CC6F0" stroke-width="14" stroke-dasharray="74.2 189.7" stroke-dashoffset="-140.2"/>
+                  <circle cx="52" cy="52" r="42" fill="none" stroke="#B8A5E8" stroke-width="14" stroke-dasharray="49.5 214.4" stroke-dashoffset="-214.4"/>
+                </svg>
+                <div class="dt"><span>🍃</span></div>
+              </div>
+            </div>
+            <div class="dbar">
+              <div class="db"><span class="db-ico" style="background:#FDF3E0">🍠</span><span class="dbk">谷薯类</span><span class="dbt"><i style="width:70%;background:#F5C46B"></i></span><span class="dbv">7</span></div>
+              <div class="db"><span class="db-ico" style="background:#E7F6EE">🥬</span><span class="dbk">蔬菜</span><span class="dbt"><i style="width:100%;background:#6FC79A"></i></span><span class="dbv">10</span></div>
+              <div class="db"><span class="db-ico" style="background:#EAF3FC">🐟</span><span class="dbk">肉蛋鱼</span><span class="dbt"><i style="width:90%;background:#9CC6F0"></i></span><span class="dbv">9</span></div>
+              <div class="db"><span class="db-ico" style="background:#F2EDFC">🍎</span><span class="dbk">水果</span><span class="dbt"><i style="width:60%;background:#B8A5E8"></i></span><span class="dbv">6</span></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card mt14">
+          <div class="sec-head" style="margin-bottom:10px"><div class="sec-title">本月餐食记录 <span class="info">ⓘ</span></div></div>
+          <div class="meal-wrap">
+            <div class="mw-left">
+              <div class="mw-total"><span class="mw-ico">🍽️</span><span class="mw-t">记录 <b>86</b> 餐</span></div>
+              <div class="mw-3">
+                <div class="mw-s"><span class="mw-si">🌅</span><span class="mw-sk">早餐</span><span class="mw-sv">28</span></div>
+                <div class="mw-s"><span class="mw-si">🌞</span><span class="mw-sk">午餐</span><span class="mw-sv">29</span></div>
+                <div class="mw-s"><span class="mw-si">🌙</span><span class="mw-sk">晚餐</span><span class="mw-sv">29</span></div>
+              </div>
+            </div>
+            <div class="mw-right">
+              <div class="mw-cap">每日记录情况</div>
+              <div class="bars">
+                <div class="bg"><i style="height:58%;background:#A6DDB2"></i><span class="bstack" style="height:66%"><i style="height:30%;background:#F5C46B"></i><i style="height:28%;background:#9CC6F0"></i><i style="height:42%;background:#F5C46B"></i></span><i style="height:72%;background:#A79BDF"></i></div>
+                <div class="bg"><i style="height:66%;background:#A6DDB2"></i><span class="bstack" style="height:74%"><i style="height:32%;background:#F5C46B"></i><i style="height:26%;background:#9CC6F0"></i><i style="height:42%;background:#F5C46B"></i></span><i style="height:78%;background:#A79BDF"></i></div>
+                <div class="bg"><i style="height:62%;background:#A6DDB2"></i><span class="bstack" style="height:70%"><i style="height:34%;background:#F5C46B"></i><i style="height:24%;background:#9CC6F0"></i><i style="height:42%;background:#F5C46B"></i></span><i style="height:82%;background:#A79BDF"></i></div>
+                <div class="bg"><i style="height:74%;background:#A6DDB2"></i><span class="bstack" style="height:80%"><i style="height:30%;background:#F5C46B"></i><i style="height:30%;background:#9CC6F0"></i><i style="height:40%;background:#F5C46B"></i></span><i style="height:84%;background:#A79BDF"></i></div>
+                <div class="bg"><i style="height:70%;background:#A6DDB2"></i><span class="bstack" style="height:86%"><i style="height:32%;background:#F5C46B"></i><i style="height:28%;background:#9CC6F0"></i><i style="height:40%;background:#F5C46B"></i></span><i style="height:80%;background:#A79BDF"></i></div>
+                <div class="bg"><i style="height:78%;background:#A6DDB2"></i><span class="bstack" style="height:84%"><i style="height:34%;background:#F5C46B"></i><i style="height:26%;background:#9CC6F0"></i><i style="height:40%;background:#F5C46B"></i></span><i style="height:88%;background:#A79BDF"></i></div>
+                <div class="bg"><i style="height:84%;background:#A6DDB2"></i><span class="bstack" style="height:92%"><i style="height:30%;background:#F5C46B"></i><i style="height:30%;background:#9CC6F0"></i><i style="height:40%;background:#F5C46B"></i></span><i style="height:94%;background:#A79BDF"></i></div>
+              </div>
+              <div class="bx"><span>9/21</span><span>9/22</span><span>9/23</span><span>9/24</span><span>9/25</span><span>9/26</span><span>9/27</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="sec-head"><div class="sec-title">月度营养变化 <span class="info">ⓘ</span></div></div>
+          <div class="deltas">
+            <div class="dl fe"><div class="dl-k">🥩 富铁食物达标天数</div><div class="dl-v">+3 天 ↑</div></div>
+            <div class="dl veg"><div class="dl-k">🥬 蔬菜种类</div><div class="dl-v">+5 种 ↑</div></div>
+            <div class="dl na"><div class="dl-k">🧂 钠偏高天数</div><div class="dl-v">−2 天 ↓</div></div>
+          </div>
+        </section>
+        <p class="note">统计依据已记录的餐食与食材，仅作饮食参考，不构成医学或营养诊断。</p>
+      </div>
+    </section>
+
+    <!-- ============ 家庭成员 ============ -->
+    <section class="view" data-view="family">
+      <div class="appbar"><div class="sec-title" style="font-size:19px">家庭成员</div><span class="chip-btn">＋ 邀请</span></div>
+      <div class="pad">
+        <section class="card">
+          <div class="list-row"><div class="lr-i" style="background:linear-gradient(140deg,#FFE3C4,#FFC9A3)">小</div><div class="lr-t">小美<div class="lr-s">妈妈 · 管理员</div></div><span class="badge-safe">我</span></div>
+          <div class="list-row"><div class="lr-i" style="background:#EAF3FC">爸</div><div class="lr-t">阿伟<div class="lr-s">爸爸 · 可查看与记录</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="list-row"><div class="lr-i" style="background:#E7F6EE">奶</div><div class="lr-t">奶奶<div class="lr-s">祖辈 · 可查看</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+        </section>
+        <section class="card">
+          <div class="sec-head" style="margin-bottom:4px"><div class="sec-title" style="font-size:14px">宝宝档案</div></div>
+          <div class="list-row"><div class="lr-i" style="background:#F2EDFC">🍼</div><div class="lr-t">11 月龄<div class="lr-s">用于营养建议的适龄匹配</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="list-row"><div class="lr-i" style="background:#FDECEC">⚠️</div><div class="lr-t">过敏与饮食限制<div class="lr-s">已登记 1 项（虾）</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+        </section>
+        <section class="card">
+          <div class="sec-head" style="margin-bottom:4px"><div class="sec-title" style="font-size:14px">家庭动态</div><span class="sec-more">全部<svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span></div>
+          <div class="list-row"><div class="lr-i" style="background:linear-gradient(140deg,#FFE3C4,#FFC9A3)">小</div><div class="lr-t">小美 记录了午餐<div class="lr-s">番茄炒蛋 · 2 小时前</div></div></div>
+          <div class="list-row"><div class="lr-i" style="background:#E7F6EE">奶</div><div class="lr-t">奶奶 查看了营养报告<div class="lr-s">本周达标 78% · 昨天</div></div></div>
+          <div class="list-row"><div class="lr-i" style="background:#EAF3FC">爸</div><div class="lr-t">阿伟 加入了家庭<div class="lr-s">可查看与记录 · 3 天前</div></div></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ============ 我的 ============ -->
+    <section class="view" data-view="me">
+      <div class="appbar"><div class="sec-title" style="font-size:19px">我的</div></div>
+      <div class="pad">
+        <section class="card" style="display:flex;align-items:center;gap:13px">
+          <div class="avatar-sm" style="width:52px;height:52px;font-size:18px">小美</div>
+          <div style="flex:1"><div style="font-size:16px;font-weight:700">小美</div><div class="meal-meta">宝宝 11 月龄 · 已记录 86 餐</div></div>
+          <svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+        </section>
+        <section class="card">
+          <div class="list-row" onclick="go('scan')"><div class="lr-i" style="background:#EFEDFB">📷</div><div class="lr-t">扫描配料表<div class="lr-s">拍一拍识别添加剂与过敏原</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="list-row" onclick="go('voice')"><div class="lr-i" style="background:#FDF2E1">🎙️</div><div class="lr-t">AI 语音助手<div class="lr-s">说一句，帮你分析饮食与健康</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="list-row" onclick="go('prep')"><div class="lr-i" style="background:#E7F6EE">🥣</div><div class="lr-t">备餐建议<div class="lr-s">下一餐该补什么</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="list-row" onclick="go('lock')"><div class="lr-i" style="background:#EAF3FC">🔔</div><div class="lr-t">锁屏推送预览<div class="lr-s">看看记录提醒长什么样</div></div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+        </section>
+        <section class="card">
+          <div class="list-row"><div class="lr-i" style="background:#F7F1E8">⚙️</div><div class="lr-t">提醒与通知</div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div class="list-row"><div class="lr-i" style="background:#F7F1E8">🔒</div><div class="lr-t">隐私与数据</div><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+        </section>
+        <p class="demo-note">演示界面 · 页面插画由 AI 生成（非实拍），餐食与营养数据为示例数据，不构成医学或营养诊断。</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 底部导航 -->
+  <nav class="tabbar" id="tabbar">
+    <button class="tab on" data-tab="home" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><span>首页</span></button>
+    <button class="tab" data-tab="records" onclick="go('records')"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/><circle cx="19" cy="19" r="2.2"/></svg><span>餐食记录</span></button>
+    <button class="tab" data-tab="report" onclick="go('report')"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V5M16 20v-6M22 20H2"/></svg><span>营养报告</span></button>
+    <button class="tab" data-tab="family" onclick="go('family')"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0M17 6.5a3 3 0 0 1 0 6M18 20a6 6 0 0 0-3-5.2"/></svg><span>家庭成员</span></button>
+    <button class="tab" data-tab="me" onclick="go('me')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><span>我的</span></button>
+  </nav>
+
+  <!-- ============ 扫描配料表 ============ -->
+  <section class="overlay" data-overlay="scan">
+    <div class="ov-bar">
+      <button class="back" onclick="close_()" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="ov-title">扫描配料表</div>
+      <div class="ov-right"></div>
+    </div>
+    <div class="ov-body">
+      <p class="ov-head-sub">拍一拍，AI 帮你识别配料信息<br>让宝宝吃得更安全、更健康</p>
+      <div class="pad-x">
+        <div class="scan-hero">
+          <img src="assets/eat/scan-baby.jpg" alt="">
+          <div class="sh-note">
+            <span>扫描食品配料表</span>
+            <span>AI 智能识别</span>
+            <span>添加剂 &amp; 过敏原</span>
+            <i></i>
+          </div>
+        </div>
+        <button class="big-btn" onclick="toast('已对准配料表，AI 正在识别…')">
+          <span class="bb-ico"><svg viewBox="0 0 24 24"><path d="M3 8V6a2 2 0 0 1 2-2h2M17 4h2a2 2 0 0 1 2 2v2M21 16v2a2 2 0 0 1-2 2h-2M7 20H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.4"/></svg></span>
+          <span class="bb-t"><b>开始扫描</b><span>对准配料表，AI 自动识别</span></span>
+          <span class="bb-arrow">→</span>
+        </button>
+
+        <div class="sec-head"><div class="sec-title" style="font-size:15px">✦ 识别结果示例</div><span class="sec-more">查看历史<svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span></div>
+        <section class="card tight">
+          <div class="res-item">
+            <img src="assets/eat/food-yogurt.jpg" alt="">
+            <div class="res-t">
+              <div class="rt-row"><span class="rt-name">原味酸奶</span><span class="badge-safe">安全</span></div>
+              <div class="rt-sub">识别到 5 种成分</div>
+              <div class="chips"><span class="chip">生牛乳</span><span class="chip">乳酸菌</span><span class="chip">白砂糖</span><span class="chip">脱脂奶粉</span><span class="chip">明胶</span></div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+        </section>
+
+        <section class="card ai-ana">
+          <svg class="aa-shield" viewBox="0 0 64 64">
+            <path d="M32 5l22 9v17c0 12.4-8.7 22.8-22 26.4C18.7 53.8 10 43.4 10 31V14z" fill="#CBEBDA"/>
+            <path d="M32 11l16 6.6V31c0 9-6.3 16.6-16 19.4C22.3 47.6 16 40 16 31V17.6z" fill="#E3F6EC"/>
+            <path d="M22.5 31.5l6.6 6.6L42 25.2" fill="none" stroke="#6FC79A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="aa-head">
+            <div class="aa-ico"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.2-2.9 7.5-7 9-4.1-1.5-7-4.8-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <div class="aa-t"><b>AI 智能分析</b><span>帮你识别潜在风险，守护宝宝饮食安全</span></div>
+            <span class="aa-more">了解更多</span>
+          </div>
+          <div class="caps">
+            <div class="cap"><div class="cp-i" style="background:#E7F6EE">🧪</div><b>添加剂识别</b><span>识别不良添加剂</span></div>
+            <div class="cap"><div class="cp-i" style="background:#FDECEC">⚠️</div><b>过敏原提示</b><span>标记常见过敏原</span></div>
+            <div class="cap"><div class="cp-i" style="background:#EAF3FC">🌿</div><b>营养价值评估</b><span>分析营养成分</span></div>
+          </div>
+        </section>
+
+        <div class="scan-hint">
+          <div class="sh-mascot"></div>
+          <div class="sh-t">用 AI 识别配料表，<br>为宝宝的健康饮食多一层保障 💛</div>
+        </div>
+        <p class="note">识别结果仅供参考，请以包装标示为准；如有过敏史请咨询医生。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AI 语音助手 ============ -->
+  <section class="overlay" data-overlay="voice">
+    <div class="ov-bar">
+      <button class="back" onclick="close_()" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="ov-title">AI 语音助手</div>
+      <div class="ov-right"><span class="chip-btn">🕘 历史</span></div>
+    </div>
+    <p class="ov-head-sub" style="margin-top:-8px">说一句，帮你分析宝宝饮食与健康</p>
+    <div class="voice-body">
+      <div class="msg bot">
+        <div class="av"><img src="assets/eat/mascot-sheep.jpg" alt=""></div>
+        <div class="bubble">我在呢~<br>请告诉我宝宝的情况，比如「拉肚子了」「有点发烧」等。</div>
+      </div>
+      <div class="msg me">
+        <div class="av"><div class="avatar-sm" style="width:34px;height:34px;font-size:13px">小美</div></div>
+        <div class="bubble"><span class="voice-mic">🎙</span> 宝宝今天下午开始拉肚子，拉了三次。</div>
+      </div>
+      <div class="msg bot">
+        <div class="av"><img src="assets/eat/mascot-sheep.jpg" alt=""></div>
+        <div class="bubble">好的，我来帮您梳理一下<br>最近 14 天的饮食时间线，看看有没有可能的关联。</div>
+      </div>
+      <div class="tl-card">
+        <div class="tl-head"><b>🔍 饮食时间线对照</b><span>共发现 1 个相关食物</span></div>
+        <div class="tl-list">
+          <div class="tl-row alert">
+            <div class="tl-when"><div class="tl-dot" style="background:#F1EAE2">🦐</div><b>3天前</b><span>（周一）</span></div>
+            <div class="tl-main"><div class="tl-title">午餐 · 虾<span class="tag-new">新食物</span></div><div class="tl-note">首次尝试虾，之后 24-72 小时为过敏观察期。</div></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-when"><div class="tl-dot" style="background:#6FC79A">✓</div><b>2天前</b><span>（周二）</span></div>
+            <div class="tl-main"><div class="tl-title">早餐 · 鸡蛋、米粉</div><div class="tl-note">无异常</div></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-when"><div class="tl-dot" style="background:#6FC79A">✓</div><b>1天前</b><span>（周三）</span></div>
+            <div class="tl-main"><div class="tl-title">午餐 · 西兰花、胡萝卜</div><div class="tl-note">无异常</div></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-when"><div class="tl-dot" style="background:#B8A5E8">🕐</div><b>今天</b><span>（周四）</span></div>
+            <div class="tl-main"><div class="tl-title">午餐 · 番茄炒蛋</div><div class="tl-note">无异常</div></div>
+          </div>
+        </div>
+        <div class="tl-advice"><span class="ia">💡</span><span>根据时间线，3 天前尝试的虾可能与当前症状有关。<br>建议您密切观察宝宝情况，如症状持续或加重，请及时就医。</span></div>
+      </div>
+    </div>
+    <div class="voice-foot">
+      <button class="vf-btn" aria-label="键盘"><svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="3"/><path d="M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M8 14h8"/></svg></button>
+      <div class="wave"><i></i><i></i><i></i><i></i><i></i></div>
+      <button class="vf-mic" onclick="toast('正在聆听…')" aria-label="按住说话"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+      <div class="wave"><i></i><i></i><i></i><i></i><i></i></div>
+      <button class="vf-end" onclick="close_()">结束</button>
+    </div>
+  </section>
+
+  <!-- ============ 备餐建议 ============ -->
+  <section class="overlay" data-overlay="prep">
+    <div class="ov-bar">
+      <button class="back" onclick="close_()" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="ov-title">备餐建议</div>
+      <div class="ov-right"><span class="age-badge">📅 11月龄 · 宝宝</span></div>
+    </div>
+    <div class="ov-body">
+      <div class="pad-x">
+        <section class="card prep-hero">
+          <div class="ph-t">✨ 今日营养情况</div>
+          <div class="ph-big">宝宝还需要补充<br>一些营养哦~</div>
+          <div class="prep-ring">
+            <div class="ring" style="width:66px;height:66px">
+              <svg width="66" height="66" viewBox="0 0 66 66"><circle cx="33" cy="33" r="27" fill="none" stroke="#E6F2EA" stroke-width="7"/><circle cx="33" cy="33" r="27" fill="none" stroke="#6FC79A" stroke-width="7" stroke-linecap="round" stroke-dasharray="127.2 169.6"/></svg>
+              <div class="rt"><b style="font-size:17px">75<i>%</i></b></div>
+            </div>
+            <div class="pr-t"><b>营养达标</b><span>今日已达标75%，<br>继续加油！</span></div>
+          </div>
+          <img src="assets/eat/hero-eat.png" alt="">
+        </section>
+
+        <div class="nut4" style="margin-bottom:14px">
+          <div class="nu"><div class="nu-k"><span class="nu-i" style="background:#FDF3E4">🥚</span>蛋白质</div><div class="nu-v">78%</div><div class="nu-bar"><i style="width:78%;background:#F5B461"></i></div></div>
+          <div class="nu"><div class="nu-k"><span class="nu-i" style="background:#E7F6EE">🥬</span>蔬菜</div><div class="nu-v">82%</div><div class="nu-bar"><i style="width:82%;background:#6FC79A"></i></div></div>
+          <div class="nu"><div class="nu-k"><span class="nu-i" style="background:#EAF3FC">🍚</span>碳水化合物</div><div class="nu-v">71%</div><div class="nu-bar"><i style="width:71%;background:#9CC6F0"></i></div></div>
+          <div class="nu"><div class="nu-k"><span class="nu-i" style="background:#F5EEFC">🥩</span>富铁食物</div><div class="nu-v">60%</div><div class="nu-bar"><i style="width:60%;background:#B8A5E8"></i></div></div>
+        </div>
+
+        <section class="card next-card">
+          <div class="nc-t">
+            <div class="nc-k">💡 下一餐建议补</div>
+            <div class="nc-name">猪肝泥 <span class="nc-tag">🩸 富铁食物</span></div>
+            <div class="nc-sub">建议在下次正餐中尝试</div>
+          </div>
+          <img src="assets/eat/dish-liver.jpg" alt="">
+          <svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+        </section>
+
+        <section class="card reason-card">
+          <div class="sec-head" style="margin-bottom:8px"><div class="sec-title" style="font-size:14px">📄 推荐理由</div></div>
+          <p class="reason">猪肝富含<b>血红素铁</b>，吸收率高，能够有效预防宝宝缺铁性贫血。根据《中国居民膳食指南（2022）》和《0-3 岁婴幼儿喂养指南》，11 月龄宝宝每日铁的推荐摄入量为 <b>6-10mg</b>。</p>
+          <div class="src-row">
+            <span class="sr-l">📖 参考标准</span>
+            <span class="sr-r">《中国居民膳食指南（2022）》<svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+        </section>
+
+        <button class="share-btn" onclick="toast('已生成分享卡片')"><svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4M4 14v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></svg>一键转发</button>
+        <p class="share-note">把科学的营养建议分享给家人，一起守护宝宝健康</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 饮食详情 ============ -->
+  <section class="overlay" data-overlay="detail">
+    <div class="ov-bar">
+      <button class="back" onclick="close_()" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="ov-title">膳食详情</div>
+      <div class="ov-right"><span class="chip-btn">⋯</span></div>
+    </div>
+    <div class="ov-body">
+      <div class="pad-x">
+
+        <div class="dhero">
+          <div class="dhero-txt">
+            <span class="dhero-chip">☀️ 今日午餐 12:30</span>
+            <div class="dhero-title">番茄炒蛋</div>
+            <span class="dhero-fit">✅ 适合 11 月龄宝宝</span>
+            <div class="dhero-desc">酸甜开胃，富含优质蛋白和维生素，宝宝很喜欢~</div>
+          </div>
+          <img class="dhero-dish" src="assets/eat/dish-tomato-egg.jpg" alt="">
+          <img class="dhero-baby" src="assets/eat/hero-baby.jpg" alt="">
+          <div class="dhero-say">好吃！</div>
+        </div>
+
+        <section class="card">
+          <div class="sec-head" style="margin-bottom:13px"><div class="sec-title">营养成分 <span class="info">ⓘ</span></div></div>
+          <div class="nut-top">
+            <div class="nut-ring-wrap">
+              <div class="nut-ring">
+                <svg width="88" height="88" viewBox="0 0 88 88" style="transform:rotate(-90deg)">
+                  <circle cx="44" cy="44" r="36" fill="none" stroke="#DCEFE4" stroke-width="9"/>
+                  <circle cx="44" cy="44" r="36" fill="none" stroke="#6FC79A" stroke-width="9" stroke-linecap="round" stroke-dasharray="169.6 226.2"/>
+                </svg>
+                <div class="rt"><b>75<i>%</i></b></div>
+              </div>
+              <div class="nut-cap">营养达标率</div>
+            </div>
+            <div class="nut-tiles">
+              <div class="ntile ok"><div class="nt-i" style="background:#FDF6E6">🥚</div><div class="nt-k">蛋白质</div><div class="nt-v">82%</div><div class="nt-bar"><i style="width:82%;background:#F5B461"></i></div><div class="nt-s">达标</div></div>
+              <div class="ntile ok"><div class="nt-i" style="background:#E7F6EE">🥬</div><div class="nt-k">蔬菜</div><div class="nt-v">63%</div><div class="nt-bar"><i style="width:63%;background:#6FC79A"></i></div><div class="nt-s">达标</div></div>
+              <div class="ntile ok"><div class="nt-i" style="background:#EAF3FC">🌾</div><div class="nt-k">碳水化合物</div><div class="nt-v">78%</div><div class="nt-bar"><i style="width:78%;background:#8FC4F0"></i></div><div class="nt-s">达标</div></div>
+              <div class="ntile low"><div class="nt-i" style="background:#FDECEC">Fe</div><div class="nt-k">富铁食物</div><div class="nt-v">54%</div><div class="nt-bar"><i style="width:54%;background:#F5A8B0"></i></div><div class="nt-s">需补充</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="sec-head" style="margin-bottom:13px">
+            <div class="sec-title" style="font-size:14px"><span class="fl-hd"><span class="fl-ico">🍃</span>食材列表</span></div>
+            <span class="sec-more">查看全部 ›</span>
+          </div>
+          <div class="foods-row">
+            <div class="fitem"><div class="fi-c" style="background:#FDECEC">🍅</div><div class="fi-n">番茄</div></div>
+            <div class="fitem"><div class="fi-c" style="background:#FDF6E6">🥚</div><div class="fi-n">鸡蛋</div></div>
+            <div class="fitem"><div class="fi-c" style="background:#F3F7E6">🫒</div><div class="fi-n">植物油</div></div>
+            <div class="fitem"><div class="fi-c" style="background:#EEF4FB">🧺</div><div class="fi-n">其他食材</div></div>
+            <svg class="foods-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+        </section>
+
+        <section class="ai-rec">
+          <div class="ar-txt">
+            <div class="ar-h"><span class="ar-av">🤖</span>AI 营养搭配推荐</div>
+            <p><span style="color:#B79BF0">✨</span> 今日饮食整体均衡，建议晚餐补充富铁食物<br>如：猪肝泥 / 牛肉末，帮助宝宝健康成长。</p>
+            <button class="ar-btn" onclick="go('prep')">查看晚餐建议 <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+          <div class="ar-art">
+            <div class="ar-say">营养更均衡<br>宝宝更健康~</div>
+            <div class="ar-mascot"></div>
+          </div>
+        </section>
+
+        <section class="card voice-row" onclick="go('voice')">
+          <div class="vr-ico">🎤</div>
+          <div class="vr-txt">
+            <div class="vr-t">餐食记录·语音助手 <span class="vr-ai">AI</span></div>
+            <div class="vr-s">说一句话，自动记录餐食信息</div>
+          </div>
+          <div class="vr-chip">今天宝宝吃了什么？ <span>🎤</span></div>
+        </section>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 锁屏推送 ============ -->
+  <section class="lock" data-overlay="lock">
+    <div class="lock-bg"><img src="assets/eat/hero-baby.jpg" alt=""></div>
+    <div class="lock-inner">
+      <div class="lock-sb">
+        <span>9:41</span>
+        <span class="sb-right">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="7" width="3" height="4" rx="1" fill="#5A4A38"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#5A4A38"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#5A4A38"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#5A4A38"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 10.5l2.2-2.6a3.4 3.4 0 0 0-4.4 0L8 10.5z" fill="#5A4A38"/><path d="M8 5.2c1.7 0 3.2.6 4.4 1.7l1.3-1.5A8.9 8.9 0 0 0 8 3.1a8.9 8.9 0 0 0-5.7 2.3l1.3 1.5A6.6 6.6 0 0 1 8 5.2z" fill="#5A4A38"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#5A4A38" stroke-opacity=".4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="#5A4A38"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="#5A4A38" fill-opacity=".5"/></svg>
+        </span>
+      </div>
+      <div class="lock-lock"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></div>
+      <div class="lock-time">12:30</div>
+      <div class="lock-date">9月27日 星期日</div>
+      <div class="notif">
+        <div class="notif-head"><span class="notif-ico">🍽️</span><b>宝宝餐食记录</b><span>现在</span></div>
+        <p>今日午餐已记录，宝宝 12:30 享用<b>番茄炒蛋</b>，营养均衡，适合 11 月龄宝宝。<b>查看 AI 搭配建议</b>。</p>
+      </div>
+      <div class="lock-foot">
+        <button class="lf" aria-label="手电筒" onclick="toast('手电筒')"><svg viewBox="0 0 24 24"><path d="M9 3h6v4l-1.4 2.2V20a1.6 1.6 0 0 1-3.2 0V9.2L9 7z"/></svg></button>
+        <button class="lf" aria-label="相机" onclick="toast('相机')"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l1.4-2h7.2L17 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.4"/></svg></button>
+      </div>
+    </div>
+    <button class="back" style="position:absolute;left:14px;top:52px;z-index:5" onclick="close_()" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <div class="lock-home"></div>
+  </section>
+
+  <!-- 轻提示 -->
+  <div id="toast" style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(10px);background:rgba(61,58,53,.9);color:#fff;font-size:12.5px;padding:9px 16px;border-radius:20px;opacity:0;transition:all .25s;pointer-events:none;z-index:60;white-space:nowrap"></div>
+</div>
+
+<script>
+'use strict';
+const TABS = ['home','records','report','family','me'];
+let current = 'home';
+
+function go(view){
+  const isTab = TABS.indexOf(view) !== -1;
+  if(isTab){
+    document.querySelectorAll('.overlay.on,.lock.on').forEach(el => el.classList.remove('on'));
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.dataset.view === view));
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === view));
+    document.getElementById('tabbar').style.display = '';
+    document.getElementById('sb').style.visibility = '';
+    document.getElementById('screen').scrollTop = 0;
+    current = view;
+  }else{
+    const el = document.querySelector('[data-overlay="' + view + '"]');
+    if(!el) return;
+    document.querySelectorAll('.overlay.on,.lock.on').forEach(o => o.classList.remove('on'));
+    el.classList.add('on');
+    const body = el.querySelector('.ov-body,.voice-body');
+    if(body) body.scrollTop = 0;
+  }
+}
+function close_(){
+  document.querySelectorAll('.overlay.on,.lock.on').forEach(el => el.classList.remove('on'));
+}
+let toastTimer = null;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(10px)';
+  }, 1600);
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') close_(); });
+function fromHash(){
+  const v = (location.hash || '').replace('#', '');
+  if(v && document.querySelector('[data-view="' + v + '"],[data-overlay="' + v + '"]')) go(v);
+}
+window.addEventListener('load', fromHash);
+window.addEventListener('hashchange', fromHash);
+
+/* ============================================================================
+   渐进增强（progressive enhancement）
+   ----------------------------------------------------------------------------
+   这段脚本是「可选的」：它只做一件事 —— 如果本地后端在跑，就用后端真实算出来的
+   数值覆盖首页的静态示例值，并亮出「已连接本地后端」标识。
+
+   三条硬约束：
+     1. 没有后端 = 零副作用。file:// 双击打开、或 /api/meal/day 404 时，
+        fetch 直接 reject，catch 里什么都不做，页面 100% 保持设计稿原样。
+     2. 不引入依赖、不加第二次请求、不改 DOM 结构，只改文本和内联样式。
+     3. 覆盖范围只到「今天」这一层（首页）。营养报告页是「本周趋势」聚合视图，
+        单日接口喂不了它，保持静态示例 —— 宁可静态，也不伪造聚合数据。
+   ========================================================================= */
+(function(){
+  var CIRC = 2 * Math.PI * 39;            // 首页圆环 r=39，周长 ≈245.0
+
+  var pct = function(r){ return Math.round(r * 100); };
+
+  // 指标状态 → 颜色/文案。营养素是两态（ok/low），食物类别还有 over。
+  function tileState(r){
+    if(r.status === 'over') return { cls:'low', text:'已超上限', bar:'#F5A8B0' };
+    if(r.inRange)           return { cls:'ok',  text:'已达标',   bar:'#6FC79A' };
+    if(r.ratio >= 0.6)      return { cls:'mid', text:'接近达标', bar:'#F5C24E' };
+    return                         { cls:'low', text:'需补充',   bar:'#F5A8B0' };
+  }
+
+  function setTile(metric, r){
+    var el = document.querySelector('[data-role="tile"][data-metric="' + metric + '"]');
+    if(!el) return;
+    var st = tileState(r);
+    el.className = 'n4 ' + st.cls;
+    var v = el.querySelector('.n4-v'), bar = el.querySelector('.n4-bar i'),
+        s = el.querySelector('.n4-s');
+    if(v)   v.textContent = pct(r.ratio) + '%';
+    if(bar){ bar.style.width = Math.min(100, pct(r.ratio)) + '%'; bar.style.background = st.bar; }
+    if(s)   s.textContent = st.text;
+  }
+
+  function heroCopy(ratio){
+    if(ratio >= 0.85) return ['宝宝今天<br>吃的很好！', '营养均衡，继续保持~'];
+    if(ratio >= 0.60) return ['宝宝今天<br>吃得还不错', '还有一两项可以补一补~'];
+    return                   ['宝宝今天<br>还要加把劲', '看看下面的建议吧~'];
+  }
+
+  function applyDay(d){
+    var rep = d.report || {}, rat = rep.ratios || {}, adv = d.advice || {};
+    var ratio = typeof rep.overallRatio === 'number' ? rep.overallRatio : 1;
+
+    // 1) 圆环弧长。取 g 里那根圆（描边带渐变），退路是 SVG 内第 2 个 circle。
+    var arc = document.querySelector('.h2-ring svg g circle') ||
+              document.querySelectorAll('.h2-ring svg circle')[1];
+    if(arc){
+      var len = CIRC * Math.max(0, Math.min(ratio, 1));
+      arc.setAttribute('stroke-dasharray', len.toFixed(1) + ' ' + CIRC.toFixed(1));
+    }
+    var rv = document.querySelector('[data-role="ring-value"]');
+    if(rv) rv.innerHTML = pct(ratio) + '<i>%</i>';
+
+    // 2) 首页文案
+    var copy = heroCopy(ratio);
+    var ht = document.querySelector('[data-role="hero-title"]');
+    var hs = document.querySelector('[data-role="hero-sub"]');
+    if(ht) ht.innerHTML = copy[0];
+    if(hs) hs.textContent = copy[1];
+
+    // 右上角小字：没有「昨天」的数据源，就不编 —— 改成讲今天的缺口
+    var hd = document.querySelector('[data-role="hero-delta"]');
+    if(hd){
+      if(adv.hasGap && typeof adv.target === 'number'){
+        var unit = (rat[adv.metric] && rat[adv.metric].unit) || '';
+        hd.textContent = '还差 ' + (adv.target - adv.current).toFixed(1) + unit + ' ' + adv.metricLabel;
+      }else{
+        hd.textContent = '今日已达标 ✅';
+      }
+    }
+
+    // 3) 四项指标
+    ['protein','vegetable','staple','iron'].forEach(function(k){
+      if(rat[k]) setTile(k, rat[k]);
+    });
+
+    // 4) 三餐卡片
+    var alertAt = {};
+    (d.safety || []).forEach(function(a){ if(a.time) alertAt[a.time] = true; });
+    var newAt = {};
+    (d.newFoods || []).forEach(function(n){ if(n.time) newAt[n.time] = true; });
+    var EMO = ['🌅','🌞','🌙'];
+
+    document.querySelectorAll('[data-role="meal"]').forEach(function(card, i){
+      var m = (rep.meals || [])[i];
+      if(!m) return;
+      var h = card.querySelector('.m3-h');
+      if(h) h.textContent = (EMO[i] || '🍽') + ' ' + m.label + ' ' + m.time;
+      var nm = card.querySelector('.m3-n em');
+      if(nm) nm.textContent = m.dish;
+      var tg = card.querySelector('.m3-t');
+      if(tg){
+        if(alertAt[m.time]){        // 负向分支：这一餐触发了安全网
+          tg.className = 'm3-t low'; tg.textContent = '⛔ 需要调整';
+        }else if(newAt[m.time]){    // 首次尝试高致敏食材 → 观察期
+          tg.className = 'm3-t mid'; tg.textContent = '🔍 首次尝试 · 观察期';
+        }else{
+          tg.className = 'm3-t ok';  tg.textContent = '✅ 营养均衡';
+        }
+      }
+    });
+
+    // 5) 备餐建议入口摘要
+    var ps = document.querySelector('[data-role="prep-summary"]');
+    if(ps && adv.summary){ ps.textContent = adv.summary; ps.classList.add('wrap'); }
+
+    // 6) 连接标识 —— 只有真的拿到数据才出现，所以它本身就是「后端在跑」的证据
+    var bar = document.querySelector('[data-role="api-bar"]');
+    if(bar){
+      var src = bar.querySelector('[data-role="api-src"]');
+      if(src){
+        src.textContent = [
+          d.scenario && d.scenario.title,
+          rep.band && rep.band.label
+        ].filter(Boolean).join(' · ');
+      }
+      bar.hidden = false;
+    }
+  }
+
+  fetch('api/meal/day', { cache: 'no-store' })
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(d){ if(d && d.report) applyDay(d); })
+    .catch(function(){ /* 没有后端：保持静态，什么都不做 */ });
+})();
+</script>
+</body>
+</html>
