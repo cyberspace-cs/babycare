@@ -50,9 +50,6 @@ python serve.py --host 0.0.0.0     # 让同局域网的其他设备也能访问
 
 页面是一个手机原型，底部 5 个 Tab。**首页的数据是后端实时算出来的**：
 
-<img width="704" height="1408" alt="babaycare" src="https://github.com/user-attachments/assets/357560df-ca35-42ab-87b4-b1fde611341b" />
-
-
 | 位置 | 静态打开 | 接了后端 |
 |---|---|---|
 | 圆环达标率 | 75% | 66%（后端按今日摄入 / 月龄推荐量算出） |
