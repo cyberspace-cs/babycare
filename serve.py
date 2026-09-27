@@ -43,6 +43,13 @@ MIME_OVERRIDE = {".js": "text/javascript", ".css": "text/css", ".html": "text/ht
 class DemoHandler(BaseHTTPRequestHandler):
     server_version = "babycare-demo"
 
+    # BaseHTTPRequestHandler 默认 HTTP/1.0，意味着**每个请求都要新建一条 TCP 连接**。
+    # 前端一次打开就要取 eat.html + 11 张素材 + 1 次 API，全走新连接。
+    # 改成 1.1 后 nginx 到上游可以复用连接。
+    # 前提是每条响应都带准确的 Content-Length —— _send() 已经保证了这点；
+    # 若哪天加了流式/分块响应，这里必须同步处理，否则连接会挂住。
+    protocol_version = "HTTP/1.1"
+
     def log_message(self, fmt, *args):  # 安静一点，只报错误
         if not str(args[1] if len(args) > 1 else "").startswith("2"):
             sys.stderr.write("  %s %s\n" % (self.address_string(), fmt % args))

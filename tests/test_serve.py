@@ -123,5 +123,86 @@ class TestStaticServingSafety(unittest.TestCase):
             self.assertNotIn(b"DemoHandler", body, f"{path} 泄露了源码")
 
 
+class TestKeepAlive(unittest.TestCase):
+    """HTTP/1.1 的 keep-alive 是「全有或全无」的：只要有一条响应没带准确
+    的 Content-Length，客户端就会一直等下去，整条连接挂死。
+    所以这里逐条路由断言 Content-Length 与实际字节数一致。
+
+    注意：这个类必须留在文件最后 —— 插在别的测试类中间会把后面的测试方法
+    并进来（Python 里 class 语句一出现，前一个类体就结束了）。
+    """
+
+    ROUTES = ["/api/health", "/api/meal/day", "/api/meal/scenarios",
+              "/eat.html", "/assets/eat/hero-eat.png", "/nope.html"]
+
+    @classmethod
+    def setUpClass(cls):
+        cls.httpd = DemoServer(("127.0.0.1", 0), DemoHandler)
+        cls.port = cls.httpd.server_address[1]
+        threading.Thread(target=cls.httpd.serve_forever, daemon=True).start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.httpd.shutdown()
+        cls.httpd.server_close()
+
+    def test_handler_speaks_http_11(self):
+        self.assertEqual(DemoHandler.protocol_version, "HTTP/1.1")
+
+    def test_every_route_declares_a_correct_content_length(self):
+        for path in self.ROUTES:
+            conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+            try:
+                conn.request("GET", path)
+                resp = conn.getresponse()
+                body = resp.read()
+                declared = resp.getheader("Content-Length")
+                self.assertIsNotNone(declared, f"{path} 没有 Content-Length")
+                self.assertEqual(int(declared), len(body),
+                                 f"{path} 的 Content-Length 与实际字节数不符 → keep-alive 会挂死")
+            finally:
+                conn.close()
+
+    def test_connection_is_reused_across_requests(self):
+        """同一连接连发三次，每次都能拿到 200，才算真的 keep-alive。"""
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+        try:
+            for _ in range(3):
+                conn.request("GET", "/api/health")
+                resp = conn.getresponse()
+                self.assertEqual(resp.status, 200)
+                self.assertEqual(resp.version, 11)
+                resp.read()
+        finally:
+            conn.close()
+
+    def test_keep_alive_survives_a_post_and_an_error(self):
+        """POST 和 4xx 之后连接也必须还能用 —— 这两条路径最容易漏掉 Content-Length。
+
+        每条响应都必须把 body 读干净：http.client 一旦发现上一条响应体没读完，
+        下一次 getresponse() 就抛 ResponseNotReady。注意只读 .status **不算**读完，
+        必须 .read()。
+        """
+        def call(method, path, body=None):
+            conn.request(method, path, body,
+                         {"Content-Type": "application/json"} if body else {})
+            resp = conn.getresponse()
+            resp.read()          # 关键：不读干净，下一条请求就发不出去
+            return resp
+
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+        try:
+            payload = json.dumps({"monthAge": 11, "meals": [
+                {"label": "午餐", "dish": "粥", "ingredients": ["粳米"], "source": "manual"}]},
+                ensure_ascii=False).encode("utf-8")
+
+            self.assertEqual(call("POST", "/api/meal/analyze", payload).status, 200)
+            self.assertEqual(call("POST", "/api/meal/analyze", b"{}").status, 400)
+            self.assertEqual(call("GET", "/api/health").status, 200,
+                             "POST/400 之后连接不可复用了")
+        finally:
+            conn.close()
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
