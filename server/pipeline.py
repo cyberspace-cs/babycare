@@ -31,7 +31,7 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 # 每份食物的默认克重（月龄分档）。视觉模型只给「是什么」，克重由这里按月龄补。
 # 真实部署时克重应来自餐盘秤或家长手填，这里给的是演示用经验值。
 DEFAULT_PORTION = {
-    "6-12m": {"staple": 20, "vegetable": 30, "fruit": 30, "meat": 20, "poultry": 20,
+    "7-12m": {"staple": 20, "vegetable": 30, "fruit": 30, "meat": 20, "poultry": 20,
               "seafood": 20, "egg": 30, "dairy": 100, "bean": 25, "fungus": 15,
               "oil": 3, "seasoning": 2},
     "13-24m": {"staple": 40, "vegetable": 50, "fruit": 50, "meat": 35, "poultry": 35,
@@ -104,7 +104,7 @@ def band_for(month_age: int) -> dict:
 
 
 def band_key(band: dict) -> str:
-    return band["id"] if band["id"] in DEFAULT_PORTION else "6-12m"
+    return band["id"] if band["id"] in DEFAULT_PORTION else "7-12m"
 
 
 def _range_bounds(text: str) -> tuple[float, float] | None:
@@ -325,8 +325,8 @@ def aggregate(observations: list[dict], month_age: int = 11) -> dict:
 
 # 食物类别的推荐范围上限（来自 age_standard.json 的 dailyPortions，这里显式列出便于计算）
 FOOD_GROUP_UPPER = {
-    "vegetable": {"6-12m": 100.0, "13-24m": 150.0, "25-72m": 300.0},
-    "staple": {"6-12m": 75.0, "13-24m": 100.0, "25-72m": 150.0},
+    "vegetable": {"7-12m": 100.0, "13-24m": 150.0, "25-72m": 300.0},
+    "staple": {"7-12m": 75.0, "13-24m": 100.0, "25-72m": 150.0},
 }
 
 

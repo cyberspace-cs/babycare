@@ -10,11 +10,12 @@
     "staple": "当日累计谷薯类(g) ÷ 推荐范围下限(g)",
     "_note": "两种口径混用是有意的：蛋白质与铁是可精确计量的营养素，蔬菜与谷薯在膳食指南里以「食物类别摄入量范围」给出，因此达标率取推荐范围的下限作为分母（达到下限即视为达标）。"
   },
+  "_howBandIdIsBuilt": "id 一律等于「minMonth-maxMonth」+ m（如 7-12m），label 是膳食指南的显示口径（如 7-12 月龄 / 2-6 岁）。两者必须指向同一段月龄，有单测锁住 —— 之前 id 写 6-12m 而 label 写 7-12 月龄、minMonth 写 6，三个字段互相打架，是实打实的 bug。",
   "bands": [
     {
-      "id": "6-12m",
+      "id": "7-12m",
       "label": "7-12 月龄",
-      "minMonth": 6,
+      "minMonth": 7,
       "maxMonth": 12,
       "targets": { "protein": 20.0, "iron": 10.0, "vegetable": 25.0, "staple": 20.0 },
       "sodiumLimit": 350.0,

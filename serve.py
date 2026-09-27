@@ -104,18 +104,39 @@ class DemoHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self): self._handle("OPTIONS")
 
 
+class DemoServer(ThreadingHTTPServer):
+    """注意：这个类必须定义在 DemoHandler **之后**。
+
+    插在 DemoHandler 中间会把后面的方法（do_GET 等）全都并进这个类，
+    结果是 DemoHandler 里没有 do_GET → 每个请求都回 501 Unsupported method ('GET')，
+    而且不报任何导入错误。
+    """
+    # Windows 上 SO_REUSEADDR 允许「抢占式」绑定已在监听的端口，会让端口冲突静默变成
+    # 「两个服务抢一个端口」。宁可这里直接报 EADDRINUSE，也不要静默拿到旧数据。
+    # Linux/macOS 上保留它，否则 Ctrl+C 重启会撞 TIME_WAIT。
+    allow_reuse_address = (os.name != "nt")
+    daemon_threads = True
+
+
 def run_stdlib(host: str, port: int):
-    httpd = ThreadingHTTPServer((host, port), DemoHandler)
+    httpd = DemoServer((host, port), DemoHandler)
     return httpd
 
 
 # --------------------------------------------------------------- 启动
 
 def _pick_port(host: str, port: int) -> int:
-    """端口被占就往后顺延，最多试 20 个。"""
+    """端口被占就往后顺延，最多试 20 个。
+
+    这里**故意不设 SO_REUSEADDR**。在 Windows 上 SO_REUSEADDR 的语义和 Linux 不同：
+    它允许绑定一个已经有进程在 LISTEN 的端口。探针一旦带上它，无论端口是否被占都会
+    绑定成功，_pick_port 就永远返回原端口，接着 HTTPServer（allow_reuse_address=1）
+    也会绑定成功 —— 结果同一个端口上挂了两个服务，请求被谁接到全看运气，
+    你会拿到上一个进程的**旧数据**，而且没有任何报错。
+    不加 SO_REUSEADDR 时，Windows 和 Linux 都会老老实实抛 EADDRINUSE。
+    """
     for candidate in range(port, port + 20):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try:
                 sock.bind((host, candidate))
                 return candidate

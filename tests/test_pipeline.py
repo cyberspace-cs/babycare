@@ -138,7 +138,7 @@ class TestNewFoods(unittest.TestCase):
 
 class TestAgeBands(unittest.TestCase):
     def test_band_switch(self):
-        self.assertEqual(api.day("demo_day")["report"]["band"]["id"], "6-12m")
+        self.assertEqual(api.day("demo_day")["report"]["band"]["id"], "7-12m")
         self.assertEqual(api.day("toddler_day")["report"]["band"]["id"], "25-72m")
 
     def test_month_age_override(self):
@@ -150,6 +150,34 @@ class TestAgeBands(unittest.TestCase):
     def test_salt_forbidden_only_under_one_year(self):
         self.assertTrue(pipeline.band_for(11)["saltForbidden"])
         self.assertFalse(pipeline.band_for(20)["saltForbidden"])
+
+    def test_band_id_agrees_with_its_own_month_range(self):
+        """id 必须就是「minMonth-maxMonth」+ m。
+
+        曾经 id 写 6-12m、label 写「7-12 月龄」、minMonth 写 6 —— 三个字段互相打架，
+        而且 DEFAULT_PORTION / FOOD_GROUP_UPPER 是按 id 取值的，id 一改就会被静默漏掉
+        （band_key 有 fallback，不会报错，只会悄悄用错档的份量）。
+        """
+        for band in pipeline.AGE_STANDARD["bands"]:
+            self.assertEqual(
+                band["id"], f"{band['minMonth']}-{band['maxMonth']}m",
+                f"{band['label']} 的 id 与月龄区间不一致")
+
+    def test_every_band_id_has_portion_and_upper_bound(self):
+        """每个 id 都必须在 DEFAULT_PORTION 与 FOOD_GROUP_UPPER 里有对应项，
+        否则会静默退回默认档 —— 不报错，但份量是错的。"""
+        for band in pipeline.AGE_STANDARD["bands"]:
+            bid = band["id"]
+            self.assertIn(bid, pipeline.DEFAULT_PORTION, bid)
+            for metric, table in pipeline.FOOD_GROUP_UPPER.items():
+                self.assertIn(bid, table, f"{bid}/{metric}")
+
+    def test_under_min_age_clamps_to_first_band(self):
+        """表里没有 0-6 月龄档（纯母乳期），6 月龄以下按最小档处理，而不是返回 None。"""
+        for month in (0, 4, 6):
+            band = pipeline.band_for(month)
+            self.assertIsNotNone(band, month)
+            self.assertEqual(band["id"], pipeline.AGE_STANDARD["bands"][0]["id"], month)
 
 
 class TestSources(unittest.TestCase):
