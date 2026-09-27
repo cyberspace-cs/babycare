@@ -50,7 +50,7 @@ python serve.py --host 0.0.0.0     # 让同局域网的其他设备也能访问
 
 页面是一个手机原型，底部 5 个 Tab。**首页的数据是后端实时算出来的**：
 
-<img width="70.4" height="140.8" alt="babaycare" src="https://github.com/user-attachments/assets/479c4651-165d-4d2e-ac71-66786c9aeb87" /># 
+<img width="140.4" height="280.8" alt="babaycare" src="https://github.com/user-attachments/assets/479c4651-165d-4d2e-ac71-66786c9aeb87" />
 
 | 位置 | 静态打开 | 接了后端 |
 |---|---|---|
